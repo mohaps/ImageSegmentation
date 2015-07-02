@@ -1,0 +1,127 @@
+.m-t{
+    margin-top: 15px;
+}
+
+body{
+   min-width:1615px; /* suppose you want minimun width of 1000px */
+   width: auto !important;  /* Firefox will set width as auto */
+   width:1615px;             /* As IE ignores !important it will set width as 1000px; */
+   overflow-x: auto !important;
+}
+
+
+canvas
+{
+    border: dashed 1px #808080;
+}
+
+
+.js-span, .jsfeat-span{
+    text-align:center;
+}
+
+#image-form {
+    margin: 0 0 0 0;
+}
+#canvas-background{
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+}
+
+#image-form{
+    display: inline-block;
+}
+
+#bg-color {
+    display: inline;
+}
+
+input[type=range] {
+    display: inline;
+    width: 100px;
+}
+
+input[type=color] {
+    width: 60px;
+}
+
+#side_options, #center_options{
+    text-align:center;
+    height: 700px;
+}
+
+#side_options{
+    width:110px;
+}
+
+#center_options .btn-app {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+}
+.btn-move{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+.output, .input{
+    text-align:center;
+}
+
+.canvas_name {
+    display: inline-block;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.close-button{
+    display: none !important;
+}
+
+.gui  {
+    margin-bottom: 30px;
+}
+
+.gui > .main{
+    width:100% !important;
+}
+.input {
+    width: 670px !important;
+}
+#clear {
+    float: right;
+    margin-top: 10px;
+}
+
+#canvas-bg {
+    float: left;
+    text-align: left;
+    height: 70px;
+}
+
+#canvas-wrapper{
+    position:relative;
+    width:650px;
+    margin: auto;
+}

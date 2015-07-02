@@ -139,12 +139,8 @@ $(document).ready(function(){
         };
         fr.readAsDataURL(file);
     });
-    gui_canny.append(jsfeat_gui_canny.domElement);
-    gui_yape.append(jsfeat_gui_yape.domElement);
     gui_slic.append(jsfeat_gui_slic.domElement);
     gui_pf.append(jsfeat_gui_pf.domElement);
-    gui_canny.hide();
-    gui_yape.hide();
     gui_slic.hide();
     gui_pf.hide();
     $('#segment_message').hide();

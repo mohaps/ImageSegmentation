@@ -329,50 +329,8 @@ $scope.updateCanvas = function () {
 };
 
 
-  $scope.jsfeat_canny = function() {
-
-      var demo_opt = function () {
-          this.blur_radius = 2;
-          this.low_threshold = 20;
-          this.high_threshold = 50;
-
-      };
-      if (gui_canny.is(':hidden')) {
-          options = new demo_opt();
-          $scope.jsfeat_gui_canny.add(options, 'blur_radius', 0, 4).step(1);
-          $scope.jsfeat_gui_canny.add(options, 'low_threshold', 1, 127).step(1);
-          $scope.jsfeat_gui_canny.add(options, 'high_threshold', 1, 127).step(1);
-          gui_canny.show()
-      }
-      var ctx, canvasWidth, canvasHeight;
-      var img_u8;
-      canvas.deactivateAll().renderAll();
-      canvasWidth = output_canvas.width;
-      canvasHeight = output_canvas.height;
-      ctx = output_canvas.getContext('2d');
-      ctx.fillStyle = "rgb(0,255,0)";
-      ctx.strokeStyle = "rgb(0,255,0)";
-      img_u8 = new jsfeat.matrix_t(canvasHeight, canvasWidth, jsfeat.U8C1_t);
-      ctx = document.getElementById('canvas').getContext('2d');
-      var imageData = ctx.getImageData(0, 0, canvasHeight, canvasWidth);
-      jsfeat.imgproc.grayscale(imageData.data, img_u8.data);
-      var r = options.blur_radius | 0;
-      var kernel_size = (r + 1) << 1;
-      jsfeat.imgproc.gaussian_blur(img_u8, img_u8, kernel_size, 0);
-      jsfeat.imgproc.canny(img_u8, img_u8, options.low_threshold | 0, options.high_threshold | 0);
-      // render result back to canvas
-      var data_u32 = new Uint32Array(imageData.data.buffer);
-      var alpha = (0xff << 24);
-      var i = img_u8.cols * img_u8.rows, pix = 0;
-      while (--i >= 0) {
-          pix = img_u8.data[i];
-          data_u32[i] = alpha | (pix << 16) | (pix << 8) | pix;
-      }
-      output_canvas.getContext('2d').putImageData(imageData, 0, 0);
-  };
 
 $scope.segmentation_slic = function() {
-
   var ctx, canvasWidth, canvasHeight;
   var slic_opt = function () {
     this.regionSize = 40;
@@ -512,54 +470,6 @@ $scope.segmentation_pf = function() {
     $('#segment_message').show()
 };
 
-$scope.jsfeat_yape = function(){
-
-    var yape_opt = function(){
-        this.lap_thres = 30;
-        this.eigen_thres = 25;
-    };
-    if (gui_yape.is(':hidden')){
-        yape_options = new yape_opt();
-        $scope.jsfeat_gui_yape.add(yape_options, "lap_thres", 1, 100);
-        $scope.jsfeat_gui_yape.add(yape_options, "eigen_thres", 1, 100);
-        gui_yape.show()
-    }
-    var ctx,img_u8,imageData,corners, i,count,data_u32;
-    canvas.deactivateAll().renderAll();
-    ctx = output_canvas.getContext('2d');
-    ctx.fillStyle = "rgb(0,255,0)";
-    ctx.strokeStyle = "rgb(0,255,0)";
-    img_u8 = new jsfeat.matrix_t(height, width, jsfeat.U8_t | jsfeat.C1_t);
-    imageData = document.getElementById('canvas').getContext('2d').getImageData(0, 0, height, width);
-    corners = [];
-    i = height*width;
-    while(--i >= 0) {
-        corners[i] = new jsfeat.point2d_t(0,0,0,0);
-    }
-    jsfeat.imgproc.grayscale(imageData.data, img_u8.data);
-    jsfeat.imgproc.box_blur_gray(img_u8, img_u8, 2, 0);
-    jsfeat.yape06.laplacian_threshold = yape_options.lap_thres|0;
-    jsfeat.yape06.min_eigen_value_threshold = yape_options.eigen_thres|0;
-    count = jsfeat.yape06.detect(img_u8, corners);
-    data_u32 = new Uint32Array(imageData.data.buffer);
-    results_global.yape = [];
-    var pix = (0xff << 24) | (0x00 << 16) | (0xff << 8) | 0x00;
-    for(var i=0; i < count; ++i)
-    {
-        var x = corners[i].x;
-        var y = corners[i].y;
-        results_global.yape.push(corners[i]);
-        var off = (x + y * height);
-        data_u32[off] = pix;
-        data_u32[off-1] = pix;
-        data_u32[off+1] = pix;
-        data_u32[off-height] = pix;
-        data_u32[off+height] = pix;
-    }
-    output_canvas.getContext('2d').putImageData(imageData, 0, 0);
-  };
-
-
 
 $scope.addOnClick = function(event) {
 		if ( event.layerX ||  event.layerX == 0) { // Firefox
@@ -636,8 +546,6 @@ function watchCanvas($scope) {
 
 cveditor.controller('CanvasControls', function($scope) {
   $scope.jsfeat_gui_pf = jsfeat_gui_pf;
-  $scope.jsfeat_gui_canny = jsfeat_gui_canny;
-  $scope.jsfeat_gui_yape = jsfeat_gui_yape;
   $scope.jsfeat_gui_slic = jsfeat_gui_slic;
   $scope.canvas = canvas;
   $scope.output_canvas = output_canvas;

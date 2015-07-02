@@ -1,7 +1,7 @@
 Segmentation Engine by Akshay Bhat
 =============================
 
-Demo [http://vision.akshaybhat.com](http://vision.akshaybhat.com)
+Demo [http://segmentation.akshaybhat.com/](http://segmentation.akshaybhat.com/)
 
 Segmentation Engine allows users to perform image segmentation inside browser using a vector editor (FabricJS) and JS implementations of Computer Vision algorithms.
 

@@ -12,21 +12,21 @@ vendor_dir = os.path.join(os.path.dirname(__file__), 'appcode/vendor')
 
 
 @task
-def test_gae():
+def test():
     """
     Test GAE version
     """
     local('dev_appserver.py .')
 
 @task
-def deploy_gae():
+def deploy():
     """
     Deploy GAE version
     """
     local('appcfg.py --oauth2 update . ')
 
 @task
-def clear_logs():
+def clear():
     """
     remove logs
     """

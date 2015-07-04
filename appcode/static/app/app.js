@@ -152,13 +152,6 @@ $(document).ready(function(){
     canvas.backgroundColor = '#ffffff';
     //canvas.add(new fabric.Circle({radius: 80, fill: '#' + getRandomColor(), left: 500, top: 500,opacity: 0.9})
     //);
-    canvas.add(new fabric.Rect({left: getRandomLeftTop().left,
-      top: getRandomLeftTop().top,
-      fill: '#' + getRandomColor(),
-      width: 400,
-      height: 20,
-      opacity: 0.9
-    }));
     $('#bg-color').val('#ffffff')
 });
 

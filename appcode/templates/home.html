@@ -54,12 +54,6 @@
                 <input type='file' id='imgfile' style="display:none"/>
                 <a type='button' class="btn btn-app btn-default" id='btnLoad' ng-click='load_image();'><i class="fa fa-image"></i>Add image</a>
             </form>
-            <button type="button" class="btn btn-app btn-default  rect" ng-click="addRect()"><i class="fa fa-square-o"></i>Add square</button>
-            <button id="drawing-mode"
-              ng-click="setFreeDrawingMode(!getFreeDrawingMode())"
-              ng-class="{'btn-inverse': getFreeDrawingMode()}" class="btn btn-app {[ getFreeDrawingMode() ? 'bg-maroon' : '' ]}">
-              <i class="{[ getFreeDrawingMode() ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode() ? 'Stop!' : 'Draw' ]}
-            </button>
             <button type="button" id="rasterize" class="btn btn-app btn-default bg-navy" ng-click="rasterize()"><i class="fa fa-download"></i>Download</button>
         </div>
     </div>
@@ -67,10 +61,23 @@
         <div class="outer">
         <div class="middle">
         <div class="inner">
-            <button href="" class="btn btn-app" ng-click="segmentation_slic()"><i class="fa fa-arrow-circle-right"></i>Superpixel Segmentation</button>
-            <div id="dat_gui_slic" class="gui"></div>
-            <button href="" class="btn btn-app" ng-click="segmentation_pf()"><i class="fa fa-arrow-circle-right"></i>PF Graph Segmentation</button>
-            <div id="dat_gui_pf" class="gui"></div>
+            <label>Mark Background</label>
+            <button type="button" class="btn btn-app btn-default bg-navy rect" ng-click="addRect()"><i class="fa fa-square-o"></i>Rectangle</button>
+            <button id="drawing-mode_b"
+              ng-click="setFreeDrawingMode(!getFreeDrawingMode())"
+              ng-class="{'btn-inverse': getFreeDrawingMode()}" class="btn bg-navy btn-app {[ getFreeDrawingMode() ? 'bg-maroon' : '' ]}">
+              <i class="{[ getFreeDrawingMode() ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode() ? 'Stop!' : 'Draw' ]}
+            </button>
+            <label>Mark Foreground</label>
+            <button type="button" class="btn btn-app btn-default  rect" ng-click="addRect()"><i class="fa fa-square-o"></i>Rectangle</button>
+            <button id="drawing-mode_f"
+              ng-click="setFreeDrawingMode(!getFreeDrawingMode())"
+              ng-class="{'btn-inverse': getFreeDrawingMode()}" class="btn btn-app {[ getFreeDrawingMode() ? 'bg-maroon' : '' ]}">
+              <i class="{[ getFreeDrawingMode() ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode() ? 'Stop!' : 'Draw' ]}
+            </button>
+            <label>Perform Segementation</label>
+            <button href="" class="btn btn-app" ng-click="segmentation_slic()"><i class="fa fa-arrow-circle-right"></i>Superpixel</button>
+            <button href="" class="btn btn-app" ng-click="segmentation_pf()"><i class="fa fa-arrow-circle-right"></i>PF Graph</button>
         </div>
         </div>
         </div>
@@ -82,7 +89,10 @@
             </h3>
             <canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>
                 <p id="segment_message">Add a segment to canvas by clicking on it</p>
-
+            <div class="m-t">
+                <div id="dat_gui_slic" class="gui"></div>
+                <div id="dat_gui_pf" class="gui"></div>
+            </div>
         </div>
     </div>
 </div>

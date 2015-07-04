@@ -55,7 +55,11 @@ function addAccessors($scope) {
 
   $scope.confirmClearMasks = function() {
     if (confirm('Remove all masks. Are you sure?')) {
-      canvas.clear();
+        canvas.forEachObject(function(obj){
+            if (!obj.isType('image')){
+                obj.remove()
+            }
+        });
     }
   };
 

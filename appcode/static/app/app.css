@@ -104,7 +104,9 @@ input[type=color] {
 }
 
 .gui  {
-    margin-bottom: 30px;
+    display: inline-block;
+    width: 46%;
+    margin: 0 10px 0 10px;
 }
 
 .gui > .main{

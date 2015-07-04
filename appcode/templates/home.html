@@ -44,8 +44,8 @@
         <h3 class="canvas_name">
             Editor
         </h3>
-        <button type="button" class="btn  btn-danger"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
-
+        <button type="button" class="btn  btn-danger clear_btn"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
+        <button type="button" class="btn  btn-warning clear_btn"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
         <div id="canvas-wrapper">
             <canvas id="canvas"  width="640" height="640"></canvas>
         </div>

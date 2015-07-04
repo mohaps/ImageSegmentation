@@ -48,7 +48,13 @@ function addAccessors($scope) {
   };
 
   $scope.confirmClear = function() {
-    if (confirm('Are you sure?')) {
+    if (confirm('Remove everything including images. Are you sure?')) {
+      canvas.clear();
+    }
+  };
+
+  $scope.confirmClearMasks = function() {
+    if (confirm('Remove all masks. Are you sure?')) {
       canvas.clear();
     }
   };

@@ -113,9 +113,11 @@ input[type=color] {
 .input {
     width: 670px !important;
 }
-#clear {
+.clear_btn {
     float: right;
     margin-top: 10px;
+    margin-left: 10px;
+
 }
 
 #canvas-bg {

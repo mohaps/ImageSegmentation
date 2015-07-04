@@ -20,6 +20,10 @@ canvas
     text-align:center;
 }
 
+.inner > label{
+    margin-top: 10px;
+}
+
 #image-form {
     margin: 0 25px 0 0;
 }

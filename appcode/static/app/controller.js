@@ -347,110 +347,90 @@ $scope.updateCanvas = function () {
 };
 
 
-
-$scope.segmentation_slic = function() {
-  var callback  = function(results){
-            var context = output_canvas.getContext('2d');
-            var segments = {};
-            var imageData = context.createImageData(output_canvas.width, output_canvas.height);
-            var data = imageData.data;
-            var w = output_canvas.width,h= output_canvas.height;
-            for (var i = 0; i < results.indexMap.length; ++i) {
-                var value = results.indexMap[i];
-                if (!segments.hasOwnProperty(value))
-                {
-                    segments[value] = {
-                        'r':(results.indexMap[i]*5)%255,
-                        'g':(results.indexMap[i]*25)%255,
-                        'b':(results.indexMap[i]*85)%255,
-                        'min_pixel':i,
-                        'max_pixel':i,
-                        'min_x':w+1,
-                        'min_y':h+1,
-                        'max_x':-1,
-                        'max_y':-1
-                        }
-                }
-                    data[4 * i + 0] = (results.indexMap[i]*5)%255;
-                    data[4 * i + 1] = (results.indexMap[i]*25)%255;
-                    data[4 * i + 2] = (results.indexMap[i]*85)%255;
-                    data[4 * i + 3] = 255;
-                    segments[value].max_pixel = i;
-                    var y = Math.floor(i/w),
-                        x = (i % w);
-                    if (x > segments[value].max_x){
-                        segments[value].max_x = x
-                    }
-                    if (x < segments[value].min_x){
-                        segments[value].min_x = x
-                    }
-                    if (y > segments[value].max_y){
-                        segments[value].max_y = y
-                    }
-                    if (y < segments[value].min_y){
-                        segments[value].min_y = y
+var callbackSegmentation  = function(results){
+        var mask = canvas_data.maskData.data;
+        var segments = {};
+        var w = output_canvas.width,h= output_canvas.height;
+        for (var i = 0; i < results.indexMap.length; ++i) {
+            var value = results.indexMap[i];
+            if (!segments.hasOwnProperty(value))
+            {
+                segments[value] = {
+                    'min_pixel':i,
+                    'max_pixel':i,
+                    'min_x':w+1,
+                    'min_y':h+1,
+                    'max_x':-1,
+                    'max_y':-1,
+                    'mask':{'b':0,'f':0}
                     }
             }
-            results_global.slic = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
-            context.putImageData(imageData, 0, 0);
-        };
-    slic_options.callback = callback;
+                if (mask[4 * i + 0] != 255)
+                {
+                    segments[value].mask.f++;
+                }
+                if (mask[4 * i + 1] != 255)
+                {
+                    segments[value].mask.b++;
+                }
+                segments[value].max_pixel = i;
+                var y = Math.floor(i/w),
+                    x = (i % w);
+                if (x > segments[value].max_x){
+                    segments[value].max_x = x
+                }
+                if (x < segments[value].min_x){
+                    segments[value].min_x = x
+                }
+                if (y > segments[value].max_y){
+                    segments[value].max_y = y
+                }
+                if (y < segments[value].min_y){
+                    segments[value].min_y = y
+                }
+        }
+        for (var k in segments){
+            s = segments[k];
+            s.r = s.mask.b > 0 ? 255 : 0;
+            s.g = s.mask.f > 0 ? 255 : 0;
+            s.b = s.mask.b > 0 && s.mask.f > 0 ? 255 : 0;
+        }
+        results_global[last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
+        $scope.renderResults(results_global[last_algorithm]);
+};
+
+
+
+$scope.segmentation_slic = function() {
+    last_algorithm = "slic";
+    slic_options.callback = callbackSegmentation;
     $scope.refreshData();
     SLICSegmentation(canvas_data.imageData,slic_options);
-    last_algorithm = "slic";
     $('#segment_message').show()
 };
 
+$scope.renderResults = function(results){
+    var context = output_canvas.getContext('2d');
+    var imageData = context.createImageData(output_canvas.width, output_canvas.height);
+    var data = imageData.data;
+    var value;
+    for (var i = 0; i < results.indexMap.length; ++i) {
+        k = results.indexMap[i];
+        data[4 * i] = results.segments[k].r;
+        data[4 * i + 1] = results.segments[k].g;
+        data[4 * i + 2] = results.segments[k].b;
+        data[4 * i + 3] = 255;
+    }
+    context.putImageData(imageData, 0, 0);
+};
+
+
+
 $scope.segmentation_pf = function() {
-  var callback  = function(results){
-            var context = output_canvas.getContext('2d');
-            var imageData = context.createImageData(output_canvas.width, output_canvas.height);
-            var data = imageData.data;
-            var segments = {};
-            var w = output_canvas.width,h= output_canvas.height;
-            for (var i = 0; i < results.indexMap.length; ++i) {
-                var value = results.indexMap[i];
-                if (!segments.hasOwnProperty(value))
-                {
-                    segments[value] = {
-                        'r':(results.indexMap[i]*5)%255,
-                        'g':(results.indexMap[i]*25)%255,
-                        'b':(results.indexMap[i]*85)%255,
-                        'min_pixel':i,
-                        'max_pixel':i,
-                        'min_x':w+1,
-                        'min_y':h+1,
-                        'max_x':-1,
-                        'max_y':-1
-                        }
-                }
-                    data[4 * i + 0] = (results.indexMap[i]*5)%255;
-                    data[4 * i + 1] = (results.indexMap[i]*25)%255;
-                    data[4 * i + 2] = (results.indexMap[i]*85)%255;
-                    data[4 * i + 3] = 255;
-                    segments[value].max_pixel = i;
-                    var y = Math.floor(i/w),
-                        x = (i % w);
-                    if (x > segments[value].max_x){
-                        segments[value].max_x = x
-                    }
-                    if (x < segments[value].min_x){
-                        segments[value].min_x = x
-                    }
-                    if (y > segments[value].max_y){
-                        segments[value].max_y = y
-                    }
-                    if (y < segments[value].min_y){
-                        segments[value].min_y = y
-                    }
-            }
-            results_global.pf = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
-            context.putImageData(imageData, 0, 0);
-        };
-    pf_options.callback = callback;
+    last_algorithm = "pf";
+    pf_options.callback = callbackSegmentation;
     $scope.refreshData();
     PFSegmentation(canvas_data.imageData,pf_options);
-    last_algorithm = "pf";
     $('#segment_message').show()
 };
 
@@ -463,8 +443,7 @@ $scope.refreshData = function(){
         }
     });
     canvas.renderAll();
-    ctx = canvas.getContext('2d');
-    imageData = ctx.getImageData(0, 0, height, width);
+    imageData = canvas.getContext('2d').getImageData(0, 0, height, width);
     canvas.forEachObject(function(obj){
         if (!obj.isType('image')){
             obj.opacity = 1.0;
@@ -473,7 +452,8 @@ $scope.refreshData = function(){
             obj.opacity = 0;
         }
     });
-    maskData = ctx.getImageData(0, 0, height, width);
+    canvas.renderAll();
+    maskData = canvas.getContext('2d').getImageData(0, 0, height, width);
     canvas.forEachObject(function(obj){
         if (obj.isType('image'))
         {

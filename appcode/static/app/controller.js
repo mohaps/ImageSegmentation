@@ -251,7 +251,6 @@ function addAccessors($scope) {
 
 
   function initCustomization() {
-
     if (/(iPhone|iPod|iPad)/i.test(navigator.userAgent)) {
       fabric.Object.prototype.cornerSize = 30;
     }
@@ -261,7 +260,6 @@ function addAccessors($scope) {
       initAligningGuidelines(canvas);
     }
   }
-
   initCustomization();
 
 
@@ -341,11 +339,6 @@ $scope.updateCanvas = function () {
 
 
 $scope.segmentation_slic = function() {
-  var ctx, canvasWidth, canvasHeight;
-  var slic_opt = function () {
-    this.regionSize = 40;
-    this.minSize = 20;
-    };
   var callback  = function(results){
             var context = output_canvas.getContext('2d');
             var segments = {};
@@ -391,32 +384,14 @@ $scope.segmentation_slic = function() {
             results_global.slic = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
             context.putImageData(imageData, 0, 0);
         };
-    if (gui_slic.is(':hidden')){
-        slic_options = new slic_opt();
-        $scope.jsfeat_gui_slic.add(slic_options, "regionSize", 20, 400);
-        $scope.jsfeat_gui_slic.add(slic_options, "minSize", 2, 100);
-        gui_slic.show()
-    }
-    canvas.deactivateAll().renderAll();
-    canvasWidth = canvas.width;
-    canvasHeight = canvas.height;
-    ctx = canvas.getContext('2d');
-    var imageData = ctx.getImageData(0, 0, canvasHeight, canvasWidth);
     slic_options.callback = callback;
-    SLICSegmentation(imageData,slic_options);
-    last_algorithm = "slic"
+    $scope.refreshData();
+    SLICSegmentation(canvas_data.imageData,slic_options);
+    last_algorithm = "slic";
     $('#segment_message').show()
 };
 
 $scope.segmentation_pf = function() {
-
-  var ctx, canvasWidth, canvasHeight;
-  var pf_opt = function () {
-    this.sigma = 0;
-    this.threshold = 1000;
-    this.minSize = 1000;
-
-    };
   var callback  = function(results){
             var context = output_canvas.getContext('2d');
             var imageData = context.createImageData(output_canvas.width, output_canvas.height);
@@ -462,22 +437,41 @@ $scope.segmentation_pf = function() {
             results_global.pf = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
             context.putImageData(imageData, 0, 0);
         };
-    if (gui_pf.is(':hidden')){
-        pf_options = new pf_opt();
-        $scope.jsfeat_gui_pf.add(pf_options, "threshold", 20, 40000);
-        $scope.jsfeat_gui_pf.add(pf_options, "sigma", 0, 20);
-        $scope.jsfeat_gui_pf.add(pf_options, "minSize", 2, 10000);
-        gui_pf.show()
-    }
-    canvas.deactivateAll().renderAll();
-    canvasWidth = canvas.width;
-    canvasHeight = canvas.height;
-    ctx = canvas.getContext('2d');
-    var imageData = ctx.getImageData(0, 0, canvasHeight, canvasWidth);
     pf_options.callback = callback;
-    PFSegmentation(imageData,pf_options);
+    $scope.refreshData();
+    PFSegmentation(canvas_data.imageData,pf_options);
     last_algorithm = "pf";
     $('#segment_message').show()
+};
+
+$scope.refreshData = function(){
+    var maskData, imageData;
+    canvas.deactivateAll().renderAll();
+    canvas.forEachObject(function(obj){
+        if (!obj.isType('image')){
+            obj.opacity = 0;
+        }
+    });
+    canvas.renderAll();
+    ctx = canvas.getContext('2d');
+    imageData = ctx.getImageData(0, 0, height, width);
+    canvas.forEachObject(function(obj){
+        if (!obj.isType('image')){
+            obj.opacity = 1.0;
+        }
+        else{
+            obj.opacity = 0;
+        }
+    });
+    maskData = ctx.getImageData(0, 0, height, width);
+    canvas.forEachObject(function(obj){
+        if (obj.isType('image'))
+        {
+            obj.opacity = 1.0;
+        }
+    });
+    canvas.renderAll();
+    canvas_data = {'maskData':maskData, 'imageData':imageData}
 };
 
 
@@ -501,8 +495,8 @@ $scope.addOnClick = function(event) {
             imageData = context.createImageData(c.width, c.height),
             data = imageData.data,
             indexMap = results_global[last_algorithm].indexMap,
-            rgbData = results_global[last_algorithm].rgbData,
-            i_x,i_y;
+            rgbData = canvas_data.imageData.data;
+        var i_x,i_y;
         k = 0;
         for (var i = 0; i < indexMap.length; ++i)
         {
@@ -555,8 +549,6 @@ function watchCanvas($scope) {
 }
 
 cveditor.controller('CanvasControls', function($scope) {
-  $scope.jsfeat_gui_pf = jsfeat_gui_pf;
-  $scope.jsfeat_gui_slic = jsfeat_gui_slic;
   $scope.canvas = canvas;
   $scope.output_canvas = output_canvas;
   $scope.getActiveStyle = getActiveStyle;

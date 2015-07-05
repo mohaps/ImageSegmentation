@@ -6,12 +6,22 @@ var canvas = new fabric.Canvas('canvas');
 var output_canvas = document.getElementById('output_canvas');
 var width = canvas.getWidth(), height = canvas.getHeight();
 var last_algorithm;
+var canvas_data; // Contains serialized image and mask data.
+var jsfeat_gui = new dat.GUI({ autoPlace: false });
+var gui_element = $("#dat_gui");
+var pf_opt = function () {
+    this.sigma = 0;
+    this.threshold = 1000;
+    this.minSize = 1000;
+};
 
-var jsfeat_gui_slic = new dat.GUI({ autoPlace: false }),
-    jsfeat_gui_pf = new dat.GUI({ autoPlace: false });
+var slic_opt = function () {
+    this.regionSize = 40;
+    this.minSize = 20;
+};
 
-var gui_slic = $("#dat_gui_slic"),
-    gui_pf = $("#dat_gui_pf");
+var pf_options = new pf_opt(),
+    slic_options = new slic_opt();
 
 
 
@@ -131,7 +141,6 @@ $(document).ready(function(){
             img = new Image();
             img.onload = function () {
                 fabric.Image.fromURL(img.src, function (oImg) {
-                oImg.scale(0.3);
                 canvas.add(oImg);
                 });
             };
@@ -139,10 +148,14 @@ $(document).ready(function(){
         };
         fr.readAsDataURL(file);
     });
-    gui_slic.append(jsfeat_gui_slic.domElement);
-    gui_pf.append(jsfeat_gui_pf.domElement);
-    gui_slic.hide();
-    gui_pf.hide();
+    var pf_gui = jsfeat_gui.addFolder('PF Graph Segmentation');
+    pf_gui.add(pf_options, "threshold", 20, 40000);
+    pf_gui.add(pf_options, "sigma", 0, 20);
+    pf_gui.add(pf_options, "minSize", 2, 10000);
+    var slic_gui = jsfeat_gui.addFolder('Superpixel Segmentation');
+    slic_gui.add(slic_options, "regionSize", 20, 400);
+    slic_gui.add(slic_options, "minSize", 2, 100);
+    gui_element.append(jsfeat_gui.domElement);
     $('#segment_message').hide();
     var load_options = {crossOrigin:"Anonymous"};
     fabric.Image.fromURL("/static/img/test.png", function(oImg)
@@ -153,6 +166,7 @@ $(document).ready(function(){
     //canvas.add(new fabric.Circle({radius: 80, fill: '#' + getRandomColor(), left: 500, top: 500,opacity: 0.9})
     //);
     $('#bg-color').val('#ffffff')
+
 });
 
 

@@ -5,7 +5,7 @@ var results_global = {};
 var canvas = new fabric.Canvas('canvas');
 var output_canvas = document.getElementById('output_canvas');
 var width = canvas.getWidth(), height = canvas.getHeight();
-var last_algorithm;
+var last_algorithm,current_mode;
 var canvas_data; // Contains serialized image and mask data.
 var jsfeat_gui = new dat.GUI({ autoPlace: false });
 var gui_element = $("#dat_gui");

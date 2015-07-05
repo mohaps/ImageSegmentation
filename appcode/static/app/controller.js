@@ -264,15 +264,24 @@ function addAccessors($scope) {
 
 
 
-  $scope.getFreeDrawingMode = function() {
-    return canvas.isDrawingMode;
+  $scope.getFreeDrawingMode = function(mode) {
+      if (mode){
+        return canvas.isDrawingMode == false || mode != current_mode ? false : true;
+      }
+      else{
+          return canvas.isDrawingMode
+      }
+
   };
 
 
 
 
-  $scope.setFreeDrawingMode = function(value) {
+  $scope.setFreeDrawingMode = function(value,mode) {
     canvas.isDrawingMode = !!value;
+    canvas.freeDrawingBrush.color = mode == 1 ? 'green': 'red';
+    canvas.freeDrawingBrush.width = 5;
+    current_mode = mode;
     canvas.deactivateAll().renderAll();
     $scope.$$phase || $scope.$digest();
   };
@@ -282,6 +291,7 @@ function addAccessors($scope) {
   $scope.getDrawingMode = function() {
     return $scope.freeDrawingMode;
   };
+
   $scope.setDrawingMode = function(type) {
     $scope.freeDrawingMode = type;
     $scope.$$phase || $scope.$digest();

@@ -61,17 +61,17 @@
         <div class="middle">
         <div class="inner">
             <button type="button" class="btn  btn-warning"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
-            <label>Mark Background</label>
-            <button id="drawing-mode_b"
-              ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)"
-              ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-navy btn-app {[ getFreeDrawingMode(2) ? 'bg-maroon' : '' ]}">
-              <i class="{[ getFreeDrawingMode(2) ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode(2) ? 'Stop!' : 'Draw' ]}
-            </button>
             <label>Mark Foreground</label>
             <button id="drawing-mode_f"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)"
-              ng-class="{'btn-inverse': getFreeDrawingMode(1)}" class="btn bg-green btn-app {[ getFreeDrawingMode(1) ? 'bg-maroon' : '' ]}">
+              ng-class="{'btn-inverse': getFreeDrawingMode(1)}" class="btn bg-green btn-app {[ getFreeDrawingMode(1) ? 'bg-navy' : '' ]}">
               <i class="{[ getFreeDrawingMode(1) ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode(1) ? 'Stop!' : 'Draw' ]}
+            </button>
+            <label>Mark Background</label>
+            <button id="drawing-mode_b"
+              ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)"
+              ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-red btn-app {[ getFreeDrawingMode(2) ? 'bg-navy' : '' ]}">
+              <i class="{[ getFreeDrawingMode(2) ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode(2) ? 'Stop!' : 'Draw' ]}
             </button>
             <label>Segment</label>
             <button href="" class="btn btn-app" ng-click="segmentation_slic()"><i class="fa fa-arrow-circle-right"></i>Superpixel</button>

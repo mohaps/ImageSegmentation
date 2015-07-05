@@ -393,7 +393,17 @@ var callbackSegmentation  = function(results){
             s = segments[k];
             s.r = s.mask.b > 0 ? 255 : 0;
             s.g = s.mask.f > 0 ? 255 : 0;
-            s.b = s.mask.b > 0 && s.mask.f > 0 ? 255 : 0;
+            if (s.mask.b > 0 && s.mask.f > 0){
+                s.r = 255 * (s.mask.b) / (s.mask.b + s.mask.f);
+                s.g = 255 * (s.mask.f) / (s.mask.b + s.mask.f);
+                s.b = 255;
+            }
+            if (s.mask.b == 0 && s.mask.f == 0){
+                s.r = 0;
+                s.g = 0;
+                s.b = 255;
+            }
+
         }
         results_global[last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
         $scope.renderResults(results_global[last_algorithm]);

@@ -446,7 +446,7 @@
 
 
   // Public API.
-  window.SLICSegmentation = function(imageData, options) {
+  window.SLICSegmentation = function(imageData, maskData, options) {
     if (typeof options === 'undefined') options = {};
     // the lateral side of a rectangle superpixel in pixels.
     if (options.regionSize === undefined) options.regionSize = 40;

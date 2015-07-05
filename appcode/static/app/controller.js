@@ -415,7 +415,7 @@ $scope.segmentation_slic = function() {
     last_algorithm = "slic";
     slic_options.callback = callbackSegmentation;
     $scope.refreshData();
-    SLICSegmentation(canvas_data.imageData,slic_options);
+    SLICSegmentation(canvas_data.imageData, canvas_data.maskData ,slic_options);
     $('#segment_message').show()
 };
 
@@ -426,11 +426,15 @@ $scope.renderResults = function(results){
     var value;
     for (var i = 0; i < results.indexMap.length; ++i) {
         k = results.indexMap[i];
-        data[4 * i] = results.segments[k].r;
-        data[4 * i + 1] = results.segments[k].g;
-        data[4 * i + 2] = results.segments[k].b;
+        //data[4 * i] = results.segments[k].r;
+        //data[4 * i + 1] = results.segments[k].g;
+        //data[4 * i + 2] = results.segments[k].b;
+        data[4 * i + 0] = (results.indexMap[i]*5)%255;
+        data[4 * i + 1] = (results.indexMap[i]*25)%255;
+        data[4 * i + 2] = (results.indexMap[i]*85)%255;
         data[4 * i + 3] = 255;
     }
+
     context.putImageData(imageData, 0, 0);
 };
 
@@ -440,7 +444,7 @@ $scope.segmentation_pf = function() {
     last_algorithm = "pf";
     pf_options.callback = callbackSegmentation;
     $scope.refreshData();
-    PFSegmentation(canvas_data.imageData,pf_options);
+    PFSegmentation(canvas_data.imageData, canvas_data.maskData, pf_options);
     $('#segment_message').show()
 };
 

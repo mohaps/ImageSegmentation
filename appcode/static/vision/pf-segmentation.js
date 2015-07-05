@@ -139,10 +139,11 @@
   }
 
   // Create an edge structure.
-  function createEdges(imageData, options) {
+  function createEdges(imageData, maskData, options) {
     var width = imageData.width,
         height = imageData.height,
         rgbData = imageData.data,
+        mrgbData = maskData.data,
         edgeSize = 4 * width * height - 3 * width - 3 * height + 2,
         index = 0,
         edges = {
@@ -161,11 +162,19 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0
+          }
+          else{
           edges.w[index] = Math.sqrt(
             Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          }
           ++index;
         }
         if (i < height - 1) {
@@ -175,11 +184,19 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0
+          }
+          else{
           edges.w[index] = Math.sqrt(
             Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          }
           ++index;
         }
         if ((j < width - 1) && (i < height - 1)) {
@@ -189,11 +206,19 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0
+          }
+          else{
           edges.w[index] = Math.sqrt(
             Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          }
           ++index;
         }
         if ((j < width - 1) && (i > 0)) {
@@ -203,11 +228,19 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
-          edges.w[index] = Math.sqrt(
-            Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
-            Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
-            Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0
+          }
+          else {
+            edges.w[index] = Math.sqrt(
+                Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
+                Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
+                Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          }
           ++index;
         }
       }
@@ -280,10 +313,10 @@
   }
 
   // Segment a graph.
-  function segmentGraph(imageData, options) {
+  function segmentGraph(imageData,maskData, options) {
     var c = options.threshold,
         minSize = options.minSize,
-        edges = createEdges(imageData, options),
+        edges = createEdges(imageData,maskData, options),
         a,
         b,
         i;
@@ -334,9 +367,9 @@
   }
 
   // Compute segmentation.
-  function computeSegmentation(imageData, options) {
+  function computeSegmentation(imageData,maskData, options) {
     smoothImage(imageData, options.sigma);
-    var universe = segmentGraph(imageData, options),
+    var universe = segmentGraph(imageData,maskData, options),
         indexMap = createIndexMap(universe, imageData, options);
     if (options.callback) {
       var rgbData = new Uint8Array(imageData.data);
@@ -371,8 +404,8 @@
   }
 
   // When image is loaded.
-  function onSuccessImageLoad(imageData, options) {
-    segmentation = computeSegmentation(imageData, options);
+  function onSuccessImageLoad(imageData, maskData, options) {
+    segmentation = computeSegmentation(imageData, maskData, options);
   }
 
   // When image is invalid.
@@ -381,11 +414,11 @@
   }
 
   // Public API.
-  window.PFSegmentation = function(imageData, options) {
+  window.PFSegmentation = function(imageData, maskData, options) {
     if (typeof options === 'undefined') options = {};
     if (options.sigma === undefined) options.sigma = 0.5;
     if (options.threshold === undefined) options.threshold = 500;
     if (options.minSize === undefined) options.minSize = 20;
-    onSuccessImageLoad(imageData, options);
+    onSuccessImageLoad(imageData, maskData, options);
   };
 }).call(this);

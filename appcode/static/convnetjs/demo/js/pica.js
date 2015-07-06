@@ -368,6 +368,9 @@ function createFilters(quality, srcSize, destSize) {
   return packedFilter;
 }
 
+
+
+
 // Convolve image in horizontal directions and transpose output. In theory,
 // transpose allow:
 //

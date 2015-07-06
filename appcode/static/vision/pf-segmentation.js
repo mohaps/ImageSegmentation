@@ -162,18 +162,16 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0
-          }
-          else{
           edges.w[index] = Math.sqrt(
             Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0.10 * edges.w[index]
           }
           ++index;
         }
@@ -184,18 +182,16 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0
-          }
-          else{
           edges.w[index] = Math.sqrt(
             Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0.10 * edges.w[index]
           }
           ++index;
         }
@@ -206,18 +202,16 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0
-          }
-          else{
           edges.w[index] = Math.sqrt(
             Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
+          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          {
+            edges.w[index] = 0.25 * edges.w[index]
           }
           ++index;
         }
@@ -228,18 +222,16 @@
           edges.b[index] = x2;
           x1 = 4 * x1;
           x2 = 4 * x2;
+          edges.w[index] = Math.sqrt(
+            Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
+            Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
+            Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
+            );
           if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
               (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
               (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
           {
-            edges.w[index] = 0
-          }
-          else {
-            edges.w[index] = Math.sqrt(
-                Math.pow(rgbData[x1 + 0] - rgbData[x2 + 0], 2) +
-                Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
-                Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
-            );
+            edges.w[index] = 0.25 * edges.w[index]
           }
           ++index;
         }

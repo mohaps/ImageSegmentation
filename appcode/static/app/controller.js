@@ -473,6 +473,9 @@ $scope.refreshData = function(){
         {
             obj.opacity = 1.0;
         }
+        else{
+            obj.opacity = 0.7;
+        }
     });
     canvas.renderAll();
     canvas_data = {'maskData':maskData, 'imageData':imageData}

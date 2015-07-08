@@ -32,3 +32,4 @@ def clear():
     """
     local('rm logs/*.log &')
 
+

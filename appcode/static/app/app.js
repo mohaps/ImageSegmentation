@@ -14,7 +14,7 @@ var pf_opt = function () {
     this.threshold = 1000;
     this.minSize = 1000;
 };
-
+var net;
 var slic_opt = function () {
     this.regionSize = 40;
     this.minSize = 20;

@@ -119,7 +119,10 @@ input[type=color] {
     float: right;
     margin-top: 10px;
     margin-left: 10px;
+}
 
+.stop_btn {
+    margin-left: 0 !important;
 }
 
 #canvas-bg {
@@ -133,3 +136,4 @@ input[type=color] {
     width:650px;
     margin: auto;
 }
+

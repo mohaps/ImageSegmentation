@@ -6,6 +6,12 @@
         <div class="outer">
         <div class="middle">
         <div class="inner">
+        <div ng-show="getFreeDrawingMode(1)">
+            <button id="drawing-mode_x" ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
+        </div>
+        <div ng-show="getFreeDrawingMode(2)">
+            <button id="drawing-mode_x_2" ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
+        </div>
         <div ng-show="canvas.getActiveGroup()">
             <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-minus"></i>Remove</button>
         </div>
@@ -44,7 +50,9 @@
         <h3 class="canvas_name">
             Editor
         </h3>
-        <button type="button" class="btn  btn-danger clear_btn"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
+        <div class="clear_btn">
+        <button type="button" class="btn  btn-danger "  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
+        </div>
         <div id="canvas-wrapper">
             <canvas id="canvas"  width="640" height="640"></canvas>
         </div>
@@ -64,18 +72,19 @@
             <label>Mark Foreground</label>
             <button id="drawing-mode_f"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)"
-              ng-class="{'btn-inverse': getFreeDrawingMode(1)}" class="btn bg-green btn-app {[ getFreeDrawingMode(1) ? 'bg-navy' : '' ]}">
-              <i class="{[ getFreeDrawingMode(1) ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode(1) ? 'Stop!' : 'Draw' ]}
+              ng-class="{'btn-inverse': getFreeDrawingMode(1)}" class="btn bg-green btn-app">
+              <i class="fa fa-pencil"></i> Draw
             </button>
             <label>Mark Background</label>
             <button id="drawing-mode_b"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)"
-              ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-red btn-app {[ getFreeDrawingMode(2) ? 'bg-navy' : '' ]}">
-              <i class="{[ getFreeDrawingMode(2) ? '' : 'fa fa-pencil' ]}"></i> {[ getFreeDrawingMode(2) ? 'Stop!' : 'Draw' ]}
+              ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-red btn-app">
+              <i class="fa fa-pencil"></i> Draw
             </button>
             <label>Segment</label>
             <button href="" class="btn btn-app" ng-click="segmentation_slic()"><i class="fa fa-arrow-circle-right"></i>Superpixel</button>
             <button href="" class="btn btn-app" ng-click="segmentation_pf()"><i class="fa fa-arrow-circle-right"></i>PF Graph</button>
+            <button href="" class="btn btn-app" ng-click="convNet()"><i class="fa fa-arrow-circle-right"></i>ConvNet (Experimental)</button>
         </div>
         </div>
         </div>
@@ -111,6 +120,11 @@
     <script type="text/javascript" src="/static/vision/pf-segmentation.js"></script>
     <script type="text/javascript" src="/static/vision/compatibility.js"></script>
     <script type="text/javascript" src="/static/vision/dat.gui.min.js"></script>
+    <script src="/static/convnetjs/build/vis.js"></script>
+    <script src="/static/convnetjs/build/util.js"></script>
+    <script src="/static/convnetjs/build/convnet.js"></script>
+    <script src="/static/convnetjs/demo/js/image-helpers.js"></script>
+    <script src="/static/convnetjs/demo/js/pica.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
     <script src="/static/app/utils.js"></script>
     <script src="/static/app/app_config.js"></script>

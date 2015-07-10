@@ -70,12 +70,6 @@ function addAccessors($scope) {
     setActiveStyle('fill', value);
   };
 
-
-
-
-
-
-
   $scope.getBgColor = function() {
     return getActiveProp('backgroundColor');
   };
@@ -98,16 +92,6 @@ function addAccessors($scope) {
     setActiveStyle('strokeWidth', parseInt(value, 10));
   };
 
-
-
-
-
-  $scope.toggleConsole = function(value) {
-      if ($scope.js_console.style){
-          $('#execute-code').toggle()
-      }
-  };
-
   $scope.getCanvasBgColor = function() {
     return canvas.backgroundColor;
   };
@@ -117,66 +101,8 @@ function addAccessors($scope) {
     canvas.renderAll();
   };
 
-  $scope.addRect = function() {
-    var coord = getRandomLeftTop();
-
-    canvas.add(new fabric.Rect({
-      left: coord.left,
-      top: coord.top,
-      fill: '#' + getRandomColor(),
-      width: 50,
-      height: 50,
-      opacity: 0.5
-    }));
-  };
-
-  $scope.addCircle = function() {
-    var coord = getRandomLeftTop();
-
-    canvas.add(new fabric.Circle({
-      left: coord.left,
-      top: coord.top,
-      fill: '#' + getRandomColor(),
-      radius: 50,
-      opacity: 0.8
-    }));
-  };
-
-  $scope.addTriangle = function() {
-    var coord = getRandomLeftTop();
-
-    canvas.add(new fabric.Triangle({
-      left: coord.left,
-      top: coord.top,
-      fill: '#' + getRandomColor(),
-      width: 50,
-      height: 50,
-      opacity: 0.8
-    }));
-  };
-
-  $scope.addLine = function() {
-    var coord = getRandomLeftTop();
-
-    canvas.add(new fabric.Line([ 50, 100, 200, 200], {
-      left: coord.left,
-      top: coord.top,
-      stroke: '#' + getRandomColor()
-    }));
-  };
 
 
-  $scope.save = function() {
-    if (!fabric.Canvas.supports('toDataURL')) {
-      alert('This browser doesn\'t provide means to serialize canvas to an image');
-    }
-    else {
-      $.post( "/Gallery", { "atoken":FB.getAccessToken(),"email":email, "s3key":s3key, "image": canvas.toDataURL('png'),'json':""}).done(
-          function(data) {
-              alert(data);
-            });
-        } // JSON.stringify(canvas.toDatalessJSON())
-  };
 
 
 
@@ -236,19 +162,6 @@ function addAccessors($scope) {
       canvas.bringToFront(activeObject);
     }
   };
-
-
-
-
-  $scope.execute = function() {
-    if (!(/^\s+$/).test(consoleValue)) {
-      eval(consoleValue);
-    }
-  };
-
-
-
-
 
   function initCustomization() {
     if (/(iPhone|iPod|iPad)/i.test(navigator.userAgent)) {
@@ -327,11 +240,6 @@ function addAccessors($scope) {
         obj.set("left", obj.left+9);
         canvas.add(obj);
   };
-
-  $scope.jsoneditor_download = function(){
-    data = "data:application/octet-stream;charset=utf-8," + JSON.stringify(editor.get()); window.open(data);
-  };
-
 
 
   $scope.load_image = function(){
@@ -426,12 +334,12 @@ $scope.renderResults = function(results){
     var value;
     for (var i = 0; i < results.indexMap.length; ++i) {
         k = results.indexMap[i];
-        //data[4 * i] = results.segments[k].r;
-        //data[4 * i + 1] = results.segments[k].g;
-        //data[4 * i + 2] = results.segments[k].b;
-        data[4 * i + 0] = (results.indexMap[i]*5)%255;
-        data[4 * i + 1] = (results.indexMap[i]*25)%255;
-        data[4 * i + 2] = (results.indexMap[i]*85)%255;
+        data[4 * i] = results.segments[k].r;
+        data[4 * i + 1] = results.segments[k].g;
+        data[4 * i + 2] = results.segments[k].b;
+        //data[4 * i + 0] = (results.indexMap[i]*5)%255;
+        //data[4 * i + 1] = (results.indexMap[i]*25)%255;
+        //data[4 * i + 2] = (results.indexMap[i]*85)%255;
         data[4 * i + 3] = 255;
     }
 
@@ -495,6 +403,10 @@ $scope.convNet = function(){
   net.makeLayers(layer_defs);
   trainer = new convnetjs.SGDTrainer(net, {method:'adadelta', batch_size:4, l2_decay:0.0001});
 
+};
+
+$scope.segment = function () {
+    $scope.segmentation_slic();
 };
 
 $scope.addOnClick = function(event) {

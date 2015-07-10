@@ -6,6 +6,7 @@ cveditor.config(function($interpolateProvider) {
     .endSymbol(']}');
 });
 
+
 cveditor.directive('bindValueTo', function() {
   return {
     restrict: 'A',

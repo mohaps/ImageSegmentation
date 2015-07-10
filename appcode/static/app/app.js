@@ -163,10 +163,8 @@ $(document).ready(function(){
         canvas.add(oImg);
     },load_options);
     canvas.backgroundColor = '#ffffff';
-    //canvas.add(new fabric.Circle({radius: 80, fill: '#' + getRandomColor(), left: 500, top: 500,opacity: 0.9})
-    //);
-    $('#bg-color').val('#ffffff')
-
+    $('#bg-color').val('#ffffff');
+    $('#dat_gui').hide(); // unhide this element to control parameters for superpixel and pf algorithms
 });
 
 

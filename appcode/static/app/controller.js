@@ -340,7 +340,11 @@ $scope.renderResults = function(results){
         //data[4 * i + 0] = (results.indexMap[i]*5)%255;
         //data[4 * i + 1] = (results.indexMap[i]*25)%255;
         //data[4 * i + 2] = (results.indexMap[i]*85)%255;
-        data[4 * i + 3] = 255;
+        data[4 * i + 3] = 255 ;
+        //data[4 * i + 0] = results.rgbData[4 * i + 0];
+        //data[4 * i + 1] = results.rgbData[4 * i + 1];
+        //data[4 * i + 2] = results.rgbData[4 * i + 2];
+        //data[4 * i + 3] = results.segments[k].g;
     }
 
     context.putImageData(imageData, 0, 0);
@@ -406,6 +410,12 @@ $scope.convNet = function(){
 };
 
 $scope.segment = function () {
+    if(canvas.isDrawingMode){
+        canvas.isDrawingMode = false;
+        canvas.deactivateAll().renderAll();
+        $scope.$$phase || $scope.$digest();
+    }
+
     $scope.segmentation_slic();
 };
 

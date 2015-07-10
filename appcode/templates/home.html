@@ -68,20 +68,17 @@
         <div class="outer">
         <div class="middle">
         <div class="inner">
-            <button type="button" class="btn  btn-warning"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
-            <label>Mark Foreground</label>
+            <button type="button" class="btn  btn-warning btn_clear"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
             <button id="drawing-mode_f"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)"
               ng-class="{'btn-inverse': getFreeDrawingMode(1)}" class="btn bg-green btn-app">
-              <i class="fa fa-pencil"></i> Draw
+              <i class="fa fa-pencil"></i> Draw Foreground
             </button>
-            <label>Mark Background</label>
             <button id="drawing-mode_b"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)"
               ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-red btn-app">
-              <i class="fa fa-pencil"></i> Draw
+              <i class="fa fa-pencil"></i> Draw Background
             </button>
-            <label>Segment</label>
             <button href="" class="btn btn-app btn-success btn-large" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
         </div>
         </div>

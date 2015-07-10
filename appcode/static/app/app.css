@@ -125,6 +125,10 @@ input[type=color] {
     margin-left: 0 !important;
 }
 
+.btn_clear {
+    margin: 10px 0 10px 0;
+}
+
 #canvas-bg {
     float: left;
     text-align: left;

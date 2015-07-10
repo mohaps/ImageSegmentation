@@ -6,12 +6,6 @@
         <div class="outer">
         <div class="middle">
         <div class="inner">
-        <div ng-show="getFreeDrawingMode(1)">
-            <button id="drawing-mode_x" ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
-        </div>
-        <div ng-show="getFreeDrawingMode(2)">
-            <button id="drawing-mode_x_2" ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
-        </div>
         <div ng-show="canvas.getActiveGroup()">
             <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-minus"></i>Remove</button>
         </div>
@@ -28,15 +22,6 @@
                 <h5>Color</h5>
                 <input type="color" bind-value-to="fill">
             </div>
-        </div>
-        <div id="drawing-mode-wrapper">
-        <div id="drawing-mode-options" ng-show="getFreeDrawingMode()">
-          <h5>Line width</h5>
-          <input type="range" value="30" min="0" max="150" bind-value-to="drawingLineWidth">
-          <h5>Line color</h5>
-          <input type="color" bind-value-to="drawingLineColor">
-          <input type="range" style="display:none" value="0" min="0" max="50" bind-value-to="drawingLineShadowWidth">
-        </div>
         </div>
     </div>
     </div>
@@ -68,6 +53,20 @@
         <div class="outer">
         <div class="middle">
         <div class="inner">
+            <div ng-show="getFreeDrawingMode(1)">
+                <button id="drawing-mode_x" ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
+            </div>
+            <div ng-show="getFreeDrawingMode(2)">
+                <button id="drawing-mode_x_2" ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
+            </div>
+            <div id="drawing-mode-wrapper">
+            <div id="drawing-mode-options" ng-show="getFreeDrawingMode()">
+              <h5>Line width</h5>
+              <input type="range" value="30" min="0" max="150" bind-value-to="drawingLineWidth">
+              <!--<h5>Line color</h5>-->
+              <!--<input type="color" bind-value-to="drawingLineColor">-->
+            </div>
+            </div>
             <button type="button" class="btn  btn-warning btn_clear"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
             <button id="drawing-mode_f"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)"
@@ -79,7 +78,7 @@
               ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-red btn-app">
               <i class="fa fa-pencil"></i> Draw Background
             </button>
-            <button href="" class="btn btn-app btn-success btn-large" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
+            <button href="" class="btn btn-app bg-green-active m-t" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
         </div>
         </div>
         </div>

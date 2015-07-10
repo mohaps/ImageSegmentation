@@ -314,7 +314,6 @@ var callbackSegmentation  = function(results){
 
         }
         results_global[last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
-        $scope.renderResults(results_global[last_algorithm]);
 };
 
 
@@ -406,7 +405,6 @@ $scope.convNet = function(){
   net = new convnetjs.Net();
   net.makeLayers(layer_defs);
   trainer = new convnetjs.SGDTrainer(net, {method:'adadelta', batch_size:4, l2_decay:0.0001});
-
 };
 
 $scope.segment = function () {
@@ -415,8 +413,8 @@ $scope.segment = function () {
         canvas.deactivateAll().renderAll();
         $scope.$$phase || $scope.$digest();
     }
-
     $scope.segmentation_slic();
+    $scope.renderResults(results_global[last_algorithm]);
 };
 
 $scope.addOnClick = function(event) {

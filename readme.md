@@ -7,7 +7,11 @@ Segmentation Engine allows users to perform image segmentation inside browser us
 
 
 ![Editing](tutorial/1.gif "Add images")
+
+
 ![Segmentation](tutorial/2.gif "Draw regions and segment")
+
+
 ![Refinement](tutorial/3.gif "Update regions and segment again")
 
 

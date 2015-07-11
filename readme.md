@@ -5,6 +5,15 @@ Demo [http://segmentation.akshaybhat.com/](http://segmentation.akshaybhat.com/)
 
 Segmentation Engine allows users to perform image segmentation inside browser using a vector editor (FabricJS) and JS implementations of Computer Vision algorithms.
 
+
+![Editing](tutorial/1.gif "Add images")
+![Segmentation](tutorial/2.gif "Draw regions and segment")
+![Refinement](tutorial/3.gif "Update regions and segment again")
+
+
+
+
+
 Following libraries & templates are used:   
 
 1. https://almsaeedstudio.com/ 

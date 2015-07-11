@@ -7,7 +7,9 @@
         <div class="middle">
         <div class="inner">
         <div ng-show="canvas.getActiveGroup()">
-            <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-minus"></i>Remove</button>
+            <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-trash"></i>Remove</button>
+            <button type="button" class="btn btn-app btn-object-action bg-yellow btn-move" id="deselect_group" ng-click="deselect()"><i class="fa fa-minus"></i>Deselect</button>
+
         </div>
         <div ng-show="canvas.getActiveObject()">
             <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected" ng-click="removeSelected()"><i class="fa fa-minus"></i>Remove</button>
@@ -16,6 +18,7 @@
             <button id="bring-forward" class="btn btn-default btn-app btn-object-action btn-move"  ng-click="bringForward()"><i class="fa fa-step-forward"></i>Move forward</button>
             <button id="send-to-back" class="btn btn-default btn-app btn-object-action btn-move"  ng-click="sendToBack()"><i class="fa fa-backward"></i>Send to back</button>
             <button id="bring-to-front" class="btn btn-default btn-app btn-object-action btn-move"  ng-click="bringToFront()"><i class="fa fa-forward"></i>Bring to front</button>
+            <button type="button" class="btn btn-app btn-object-action bg-yellow btn-move" id="deselect" ng-click="deselect()"><i class="fa fa-minus"></i>Deselect</button>
             <div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
                 <h5>Opacity</h5>
                 <input value="100" type="range" bind-value-to="opacity">
@@ -28,46 +31,22 @@
     </div>
     </div>
     <div class="col-xs-5 m-t input">
-        <div id="canvas-bg">
-            <label id="bg-label">Background</label>
-            <div><input type="color" id="bg-color" bind-value-to="canvasBgColor"></div>
-        </div>
+        <button type="button" class="btn  btn-danger"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
         <h3 class="canvas_name">
             Editor
         </h3>
+        <button type="button" class="btn  btn-warning btn_clear"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
+
         <div class="clear_btn">
-        <button type="button" class="btn  btn-danger "  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
         </div>
         <div id="canvas-wrapper">
             <canvas id="canvas"  width="640" height="640"></canvas>
         </div>
-        <div class="m-t">
+        <div class="m-t operations">
             <form id="image-form"  onsubmit="return false;">
                 <input type='file' id='imgfile' style="display:none"/>
                 <a type='button' class="btn btn-app btn-default" id='btnLoad' ng-click='load_image();'><i class="fa fa-image"></i>Add image</a>
             </form>
-            <button type="button" id="rasterize" class="btn btn-app btn-default bg-navy" ng-click="rasterize()"><i class="fa fa-download"></i>Download</button>
-        </div>
-    </div>
-    <div class="col-xs-1 m-t" id="center_options">
-        <div class="outer">
-        <div class="middle">
-        <div class="inner">
-            <div ng-show="getFreeDrawingMode(1)">
-                <button id="drawing-mode_x" ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
-            </div>
-            <div ng-show="getFreeDrawingMode(2)">
-                <button id="drawing-mode_x_2" ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
-            </div>
-            <div id="drawing-mode-wrapper">
-            <div id="drawing-mode-options" ng-show="getFreeDrawingMode()">
-              <h5>Line width</h5>
-              <input type="range" value="30" min="0" max="150" bind-value-to="drawingLineWidth">
-              <!--<h5>Line color</h5>-->
-              <!--<input type="color" bind-value-to="drawingLineColor">-->
-            </div>
-            </div>
-            <button type="button" class="btn  btn-warning btn_clear"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
             <button id="drawing-mode_f"
               ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)"
               ng-class="{'btn-inverse': getFreeDrawingMode(1)}" class="btn bg-green btn-app">
@@ -78,16 +57,32 @@
               ng-class="{'btn-inverse': getFreeDrawingMode(2)}" class="btn bg-red btn-app">
               <i class="fa fa-pencil"></i> Draw Background
             </button>
-            <button href="" class="btn btn-app bg-green-active m-t" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
+            <div ng-show="getFreeDrawingMode(1)" class="drawing-mode">
+                <button id="drawing-mode_x" ng-click="setFreeDrawingMode(!getFreeDrawingMode(1),1)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
+            </div>
+            <div ng-show="getFreeDrawingMode(2)" class="drawing-mode">
+                <button id="drawing-mode_x_2" ng-click="setFreeDrawingMode(!getFreeDrawingMode(2),2)" class="btn bg-red btn-app stop_btn"> <i class="fa fa-close"></i>Stop Drawing!</button>
+            </div>
+            <div id="drawing-mode-wrapper"  class="drawing-mode">
+            <div id="drawing-mode-options"  ng-show="getFreeDrawingMode()">
+              <h5>Line width</h5>
+              <input type="range" value="30" min="0" max="150" bind-value-to="drawingLineWidth">
+              <!--<h5>Line color</h5>-->
+              <!--<input type="color" bind-value-to="drawingLineColor">-->
+            </div>
+            </div>
+            <button href="" class="btn btn-app bg-green-active" id="segment" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
+
         </div>
-        </div>
-        </div>
+
     </div>
     <div class="col-xs-5 output m-t">
         <div style="width:650px;">
             <h3 class="canvas_name">
             Output
             </h3>
+            <button type="button" id="rasterize" class="btn btn-default bg-navy" ng-click="rasterize()"><i class="fa fa-download"></i>Download</button>
+
             <canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>
                 <p id="segment_message">Add a segment to canvas by clicking on it</p>
             <div class="m-t">

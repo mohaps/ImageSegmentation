@@ -24,9 +24,6 @@ canvas
     margin-top: 10px;
 }
 
-#image-form {
-    margin: 0 25px 0 0;
-}
 #canvas-background{
     display: block;
     width: 100%;
@@ -75,6 +72,10 @@ input[type=color] {
     text-align:center;
 }
 
+.operations{
+    text-align: left;
+}
+
 .canvas_name {
     display: inline-block;
   margin-bottom: 15px;
@@ -90,13 +91,12 @@ input[type=color] {
 
 .middle {
     display: table-cell;
-    vertical-align:bottom;
+    vertical-align:middle;
 }
 
 .inner {
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 240px;
 }
 
 
@@ -116,19 +116,31 @@ input[type=color] {
 .input {
     width: 670px !important;
 }
-.clear_btn {
+
+#clear{
+    float: left;
+    margin-top: 10px;
+}
+
+#clear_mask{
     float: right;
     margin-top: 10px;
-    margin-left: 10px;
 }
 
-.stop_btn {
-    margin: 10px 0 10px 0;
+#segment{
+    float: right;
 }
 
-.btn_clear {
-    margin: 10px 0 10px 0;
+#rasterize{
+    float: left;
+    margin-top: 10px;
 }
+
+#drawing-mode-options > h5{
+    text-align: center;
+    margin: auto;
+}
+
 
 #canvas-bg {
     float: left;
@@ -142,3 +154,6 @@ input[type=color] {
     margin: auto;
 }
 
+.drawing-mode {
+    display: inline-block;
+}

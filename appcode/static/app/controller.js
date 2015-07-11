@@ -316,6 +316,10 @@ var callbackSegmentation  = function(results){
         results_global[last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
 };
 
+$scope.deselect = function(){
+    canvas.deactivateAll().renderAll();
+    $scope.$$phase || $scope.$digest();
+};
 
 
 $scope.segmentation_slic = function() {

@@ -111,7 +111,7 @@ function addAccessors($scope) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     }
     else {
-      window.open(canvas.toDataURL('png'));
+      window.open(output_canvas.toDataURL('png'));
     }
   };
 
@@ -273,11 +273,11 @@ var callbackSegmentation  = function(results){
                     'mask':{'b':0,'f':0}
                     }
             }
-                if (mask[4 * i + 0] != 255)
+                if (mask[4 * i + 0] == 0 && mask[4 * i + 1] == 128)
                 {
                     segments[value].mask.f++;
                 }
-                if (mask[4 * i + 1] != 255)
+                if (mask[4 * i + 0] == 128 && mask[4 * i + 1] == 0)
                 {
                     segments[value].mask.b++;
                 }
@@ -296,22 +296,6 @@ var callbackSegmentation  = function(results){
                 if (y < segments[value].min_y){
                     segments[value].min_y = y
                 }
-        }
-        for (var k in segments){
-            s = segments[k];
-            s.r = s.mask.b > 0 ? 255 : 0;
-            s.g = s.mask.f > 0 ? 255 : 0;
-            if (s.mask.b > 0 && s.mask.f > 0){
-                s.r = 255 * (s.mask.b) / (s.mask.b + s.mask.f);
-                s.g = 255 * (s.mask.f) / (s.mask.b + s.mask.f);
-                s.b = 255;
-            }
-            if (s.mask.b == 0 && s.mask.f == 0){
-                s.r = 0;
-                s.g = 0;
-                s.b = 255;
-            }
-
         }
         results_global[last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
 };
@@ -334,22 +318,28 @@ $scope.renderResults = function(results){
     var context = output_canvas.getContext('2d');
     var imageData = context.createImageData(output_canvas.width, output_canvas.height);
     var data = imageData.data;
-    var value;
     for (var i = 0; i < results.indexMap.length; ++i) {
         k = results.indexMap[i];
-        data[4 * i] = results.segments[k].r;
-        data[4 * i + 1] = results.segments[k].g;
-        data[4 * i + 2] = results.segments[k].b;
+        if (results.segments[k].mask.f > 0 && results.segments[k].mask.b  == 0) {
+            data[4 * i + 0] = results.rgbData[4 * i + 0];
+            data[4 * i + 1] = results.rgbData[4 * i + 1];
+            data[4 * i + 2] = results.rgbData[4 * i + 2];
+            data[4 * i + 3] = 255;
+        }
+        else if(results.segments[k].mask.f> 0 && results.segments[k].mask.b > 0)
+        {
+            data[4 * i + 0] = results.rgbData[4 * i + 0];
+            data[4 * i + 1] = results.rgbData[4 * i + 1];
+            data[4 * i + 2] = results.rgbData[4 * i + 2];
+            data[4 * i + 3] = 125;
+        }
+        else{
+            data[4 * i + 3] = 0;
+        }
         //data[4 * i + 0] = (results.indexMap[i]*5)%255;
         //data[4 * i + 1] = (results.indexMap[i]*25)%255;
         //data[4 * i + 2] = (results.indexMap[i]*85)%255;
-        data[4 * i + 3] = 255 ;
-        //data[4 * i + 0] = results.rgbData[4 * i + 0];
-        //data[4 * i + 1] = results.rgbData[4 * i + 1];
-        //data[4 * i + 2] = results.rgbData[4 * i + 2];
-        //data[4 * i + 3] = results.segments[k].g;
     }
-
     context.putImageData(imageData, 0, 0);
 };
 

@@ -132,6 +132,11 @@ input[type=color] {
 }
 
 #rasterize{
+    float: right;
+    margin-top: 10px;
+}
+
+#export{
     float: left;
     margin-top: 10px;
 }

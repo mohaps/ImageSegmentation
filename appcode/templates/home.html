@@ -31,7 +31,7 @@
     </div>
     </div>
     <div class="col-xs-5 m-t input">
-        <button type="button" class="btn  btn-danger"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i> Clean canvas</button>
+        <button type="button" class="btn  btn-danger"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i>Clean editor</button>
         <h3 class="canvas_name">
             Editor
         </h3>
@@ -71,23 +71,22 @@
               <!--<input type="color" bind-value-to="drawingLineColor">-->
             </div>
             </div>
-            <button href="" class="btn btn-app bg-green-active" id="segment" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
+            <button href="" class="btn btn-app btn-success" id="segment" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
 
         </div>
-
+        <div class="m-t">
+                <div id="dat_gui" class="gui"></div>
+        </div>
     </div>
     <div class="col-xs-5 output m-t">
         <div style="width:650px;">
+            <button type="button" id="export" class="btn btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
             <h3 class="canvas_name">
             Output
             </h3>
             <button type="button" id="rasterize" class="btn btn-default bg-navy" ng-click="rasterize()"><i class="fa fa-download"></i>Download</button>
-
-            <canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>
-                <p id="segment_message">Add a segment to canvas by clicking on it</p>
-            <div class="m-t">
-                <div id="dat_gui" class="gui"></div>
-            </div>
+            <!--<canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>-->
+            <canvas id="output_canvas" ng- width="640" height="640"></canvas>
         </div>
     </div>
 </div>

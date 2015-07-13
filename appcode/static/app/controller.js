@@ -102,11 +102,25 @@ function addAccessors($scope) {
   };
 
 
+$scope.export = function() {
+    if (!fabric.Canvas.supports('toDataURL')) {
+      alert('This browser doesn\'t provide means to serialize canvas to an image');
+    }
+    else {
+      fabric.Image.fromURL(output_canvas.toDataURL(), function(img) {
+            img.left = 5;
+            img.top = 5;
+            canvas.add(img);
+            img.bringToFront();
+            canvas.renderAll();
+        });
+    }
+  };
 
 
 
 
-  $scope.rasterize = function() {
+  $scope.download = function() {
     if (!fabric.Canvas.supports('toDataURL')) {
       alert('This browser doesn\'t provide means to serialize canvas to an image');
     }
@@ -311,7 +325,7 @@ $scope.segmentation_slic = function() {
     slic_options.callback = callbackSegmentation;
     $scope.refreshData();
     SLICSegmentation(canvas_data.imageData, canvas_data.maskData ,slic_options);
-    $('#segment_message').show()
+
 };
 
 $scope.renderResults = function(results){
@@ -388,7 +402,7 @@ $scope.refreshData = function(){
 
 $scope.convNet = function(){
   var layer_defs = [];
-  layer_defs.push({type:'input', out_sx:6, out_sy:6, out_depth:3});
+  layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:3});
   layer_defs.push({type:'conv', sx:5, filters:16, stride:1, pad:2, activation:'relu'});
   layer_defs.push({type:'pool', sx:2, stride:2});
   layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
@@ -408,8 +422,10 @@ $scope.segment = function () {
         $scope.$$phase || $scope.$digest();
     }
     $scope.segmentation_slic();
+    $scope.segmentation_pf();
     $scope.renderResults(results_global[last_algorithm]);
 };
+
 
 $scope.addOnClick = function(event) {
 		if ( event.layerX ||  event.layerX == 0) { // Firefox

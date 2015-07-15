@@ -48,8 +48,8 @@ function initialize_data(){
       layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
       layer_defs.push({type:'pool', sx:2, stride:2});
       layer_defs.push({type:'softmax', num_classes:2});
-      net = new convnetjs.Net();
-      net.makeLayers(layer_defs);
+      state.net = new convnetjs.Net();
+      state.net.makeLayers(layer_defs);
       trainer = new convnetjs.SGDTrainer(net, {method:'adadelta', batch_size:4, l2_decay:0.0001});
 
 }
@@ -207,7 +207,7 @@ $scope.export = function() {
 
   $scope.getFreeDrawingMode = function(mode) {
       if (mode){
-        return canvas.isDrawingMode == false || mode != current_mode ? false : true;
+        return canvas.isDrawingMode == false || mode != state.current_mode ? false : true;
       }
       else{
           return canvas.isDrawingMode
@@ -222,7 +222,7 @@ $scope.export = function() {
     canvas.isDrawingMode = !!value;
     canvas.freeDrawingBrush.color = mode == 1 ? 'green': 'red';
     canvas.freeDrawingBrush.width = 5;
-    current_mode = mode;
+    state.current_mode = mode;
     canvas.deactivateAll().renderAll();
     $scope.$$phase || $scope.$digest();
   };
@@ -284,7 +284,7 @@ $scope.updateCanvas = function () {
 
 
 var callbackSegmentation  = function(results){
-        var mask = canvas_data.maskData.data;
+        var mask = state.mask_data.data;
         var segments = {};
         var w = output_canvas.width,h= output_canvas.height;
         for (var i = 0; i < results.indexMap.length; ++i) {
@@ -325,7 +325,7 @@ var callbackSegmentation  = function(results){
                     segments[value].min_y = y
                 }
         }
-        results_global[last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
+        state.results[state.last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
 };
 
 $scope.deselect = function(){
@@ -386,7 +386,7 @@ $scope.refreshData = function(){
         }
     });
     canvas.renderAll();
-    maskData = canvas.getContext('2d').getImageData(0, 0, height, width);
+    state.mask_data = canvas.getContext('2d').getImageData(0, 0, height, width);
     canvas.forEachObject(function(obj){
         if (obj.isType('image'))
         {
@@ -397,7 +397,7 @@ $scope.refreshData = function(){
         }
     });
     canvas.renderAll();
-    canvas_data = {'maskData':maskData, 'imageData':imageData}
+    state.canvas_data = {'imageData':imageData}
 };
 
 
@@ -407,14 +407,13 @@ $scope.segment = function () {
         canvas.deactivateAll().renderAll();
         $scope.$$phase || $scope.$digest();
     }
-    last_algorithm = "segment";
+    state.last_algorithm = "segment";
     $scope.refreshData();
-    slic_options.callback = callbackSegmentation;
-    SLICSegmentation(canvas_data.imageData, canvas_data.maskData ,slic_options);
-    pf_options.callback = callbackSegmentation;
-    $scope.refreshData();
-    PFSegmentation(canvas_data.imageData, canvas_data.maskData, pf_options);
-    $scope.renderResults(results_global[last_algorithm]);
+    state.options.slic.callback = callbackSegmentation;
+    state.options.pf.callback = callbackSegmentation;
+    SLICSegmentation(state.canvas_data.imageData, state.mask_data ,state.options.slic);
+    PFSegmentation(state.canvas_data.imageData, state.mask_data, state.options.pf);
+    $scope.renderResults(state.results[state.last_algorithm]);
 };
 
 
@@ -426,10 +425,10 @@ $scope.addOnClick = function(event) {
 			mouseX = event.offsetX;
 			mouseY = event.offsetY;
 		}
-        if (last_algorithm)
+        if (state.last_algorithm)
         {
-        var segment = results_global[last_algorithm].segments[results_global[last_algorithm].indexMap[width*mouseY+mouseX]],
-            segment_index = results_global[last_algorithm].indexMap[width*mouseY+mouseX],
+        var segment = state.results[state.last_algorithm].segments[state.results[state.last_algorithm].indexMap[width*mouseY+mouseX]],
+            segment_index = state.results[state.last_algorithm].indexMap[width*mouseY+mouseX],
             c = document.createElement('canvas');
         c.setAttribute('id', '_temp_canvas');
         c.width = segment.max_x - segment.min_x + 1;
@@ -437,8 +436,8 @@ $scope.addOnClick = function(event) {
         var context = c.getContext('2d'),
             imageData = context.createImageData(c.width, c.height),
             data = imageData.data,
-            indexMap = results_global[last_algorithm].indexMap,
-            rgbData = canvas_data.imageData.data;
+            indexMap = state.results[state.last_algorithm].indexMap,
+            rgbData = state.canvas_data.imageData.data;
         var i_x,i_y;
         k = 0;
         for (var i = 0; i < indexMap.length; ++i)

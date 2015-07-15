@@ -1,21 +1,24 @@
 /**
  * Created by aub3 on 5/1/15.
  */
-var state = {
-    'results':{
-
-    }
-
-
-};
-
-var results_global= {},
-    algorithm = {};
 var canvas = new fabric.Canvas('canvas'),
     output_canvas = document.getElementById('output_canvas'),
-    width = canvas.getWidth(), height = canvas.getHeight(),
-    canvas_data,net,pf_options,slic_options,last_algorithm,current_mode;
+    width = canvas.getWidth(),
+    height = canvas.getHeight(),
+    state = {
+        'current_mode':null,
+        'last_algorithm':'',
+        'results':{
 
+        },
+        net:null,
+        canvas_data:null,
+        mask_data:null,
+        'options':{
+            'pf':null,
+            'slic':null
+        }
+    };
 
 
 initialize_ui = function () {
@@ -30,15 +33,15 @@ initialize_ui = function () {
     this.regionSize = 40;
     this.minSize = 20;
     };
-    pf_options = new pf_opt();
-    slic_options = new slic_opt();
+    state.options.pf = new pf_opt();
+    state.options.slic = new slic_opt();
     var pf_gui = jsfeat_gui.addFolder('PF Graph Segmentation');
-    pf_gui.add(pf_options, "threshold", 20, 40000);
-    pf_gui.add(pf_options, "sigma", 0, 20);
-    pf_gui.add(pf_options, "minSize", 2, 10000);
+    pf_gui.add(state.options.pf, "threshold", 20, 40000);
+    pf_gui.add(state.options.pf, "sigma", 0, 20);
+    pf_gui.add(state.options.pf, "minSize", 2, 10000);
     var slic_gui = jsfeat_gui.addFolder('Superpixel Segmentation');
-    slic_gui.add(slic_options, "regionSize", 20, 400);
-    slic_gui.add(slic_options, "minSize", 2, 100);
+    slic_gui.add(state.options.slic, "regionSize", 20, 400);
+    slic_gui.add(state.options.slic, "minSize", 2, 100);
     $("#dat_gui").hide().append(jsfeat_gui.domElement);
     canvas.backgroundColor = '#ffffff';
     $('#bg-color').val('#ffffff');

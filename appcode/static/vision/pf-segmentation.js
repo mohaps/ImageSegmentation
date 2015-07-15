@@ -167,12 +167,12 @@
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0.10 * edges.w[index]
-          }
+          //if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+          //    (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+          //    (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          //{
+          //  edges.w[index] = 0.10 * edges.w[index]
+          //}
           ++index;
         }
         if (i < height - 1) {
@@ -187,12 +187,12 @@
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0.10 * edges.w[index]
-          }
+          //if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+          //    (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+          //    (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          //{
+          //  edges.w[index] = 0.10 * edges.w[index]
+          //}
           ++index;
         }
         if ((j < width - 1) && (i < height - 1)) {
@@ -207,12 +207,12 @@
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0.25 * edges.w[index]
-          }
+          //if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+          //    (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+          //    (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          //{
+          //  edges.w[index] = 0.25 * edges.w[index]
+          //}
           ++index;
         }
         if ((j < width - 1) && (i > 0)) {
@@ -227,12 +227,12 @@
             Math.pow(rgbData[x1 + 1] - rgbData[x2 + 1], 2) +
             Math.pow(rgbData[x1 + 2] - rgbData[x2 + 2], 2)
             );
-          if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
-              (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
-              (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
-          {
-            edges.w[index] = 0.25 * edges.w[index]
-          }
+          //if ((mrgbData[x1] != 255 || mrgbData[x1 + 1 ] != 255 || mrgbData[x1 + 2] != 255) &&
+          //    (mrgbData[x2] != 255 || mrgbData[x2 + 1 ] != 255 || mrgbData[x2 + 2] != 255) &&
+          //    (mrgbData[x1] == mrgbData[x2] && mrgbData[x1 + 1] == mrgbData[x2 +1] && mrgbData[x1 + 2] == mrgbData[x2 + 2]))
+          //{
+          //  edges.w[index] = 0.25 * edges.w[index]
+          //}
           ++index;
         }
       }

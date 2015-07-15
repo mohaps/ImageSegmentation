@@ -397,7 +397,7 @@ $scope.refreshData = function(){
         }
     });
     canvas.renderAll();
-    state.canvas_data = {'imageData':imageData}
+    state.canvas_data = imageData;
 };
 
 
@@ -409,10 +409,10 @@ $scope.segment = function () {
     }
     state.last_algorithm = "segment";
     $scope.refreshData();
-    state.options.slic.callback = callbackSegmentation;
+    //state.options.slic.callback = callbackSegmentation;
     state.options.pf.callback = callbackSegmentation;
-    SLICSegmentation(state.canvas_data.imageData, state.mask_data ,state.options.slic);
-    PFSegmentation(state.canvas_data.imageData, state.mask_data, state.options.pf);
+    //SLICSegmentation(state.canvas_data, state.mask_data ,state.options.slic);
+    PFSegmentation(state.canvas_data, state.mask_data, state.options.pf);
     $scope.renderResults(state.results[state.last_algorithm]);
 };
 
@@ -437,7 +437,7 @@ $scope.addOnClick = function(event) {
             imageData = context.createImageData(c.width, c.height),
             data = imageData.data,
             indexMap = state.results[state.last_algorithm].indexMap,
-            rgbData = state.canvas_data.imageData.data;
+            rgbData = state.canvas_data.data;
         var i_x,i_y;
         k = 0;
         for (var i = 0; i < indexMap.length; ++i)

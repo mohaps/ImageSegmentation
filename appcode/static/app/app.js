@@ -1,30 +1,49 @@
 /**
  * Created by aub3 on 5/1/15.
  */
-var results_global = {};
-var canvas = new fabric.Canvas('canvas');
-var output_canvas = document.getElementById('output_canvas');
-var width = canvas.getWidth(), height = canvas.getHeight();
-var last_algorithm,current_mode;
-var canvas_data; // Contains serialized image and mask data.
-var jsfeat_gui = new dat.GUI({ autoPlace: false });
-var gui_element = $("#dat_gui");
-var pf_opt = function () {
+var state = {
+    'results':{
+
+    }
+
+
+};
+
+var results_global= {},
+    algorithm = {};
+var canvas = new fabric.Canvas('canvas'),
+    output_canvas = document.getElementById('output_canvas'),
+    width = canvas.getWidth(), height = canvas.getHeight(),
+    canvas_data,net,pf_options,slic_options,last_algorithm,current_mode;
+
+
+
+initialize_ui = function () {
+    var jsfeat_gui = new dat.GUI({ autoPlace: false });
+    var pf_opt, slic_opt;
+    pf_opt = function () {
     this.sigma = 0;
     this.threshold = 1000;
     this.minSize = 1000;
-};
-var net;
-var slic_opt = function () {
+    };
+    slic_opt = function () {
     this.regionSize = 40;
     this.minSize = 20;
-};
-
-var pf_options = new pf_opt(),
+    };
+    pf_options = new pf_opt();
     slic_options = new slic_opt();
-
-
-
+    var pf_gui = jsfeat_gui.addFolder('PF Graph Segmentation');
+    pf_gui.add(pf_options, "threshold", 20, 40000);
+    pf_gui.add(pf_options, "sigma", 0, 20);
+    pf_gui.add(pf_options, "minSize", 2, 10000);
+    var slic_gui = jsfeat_gui.addFolder('Superpixel Segmentation');
+    slic_gui.add(slic_options, "regionSize", 20, 400);
+    slic_gui.add(slic_options, "minSize", 2, 100);
+    $("#dat_gui").hide().append(jsfeat_gui.domElement);
+    canvas.backgroundColor = '#ffffff';
+    $('#bg-color').val('#ffffff');
+    fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+};
 
 
 initial = function() {
@@ -118,6 +137,22 @@ initial = function() {
   };
 initial();
 
+ $('#imgfile').on("change",function(){
+    file = this.files[0];
+    fr = new FileReader();
+    fr.onload = function () {
+        img = new Image();
+        img.onload = function () {
+            fabric.Image.fromURL(img.src, function (oImg) {
+            canvas.add(oImg);
+            });
+        };
+        img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+});
+
+
 (function() {
   fabric.util.addListener(fabric.window, 'load', function() {
     var canvas = this.__canvas || this.canvas,
@@ -134,37 +169,7 @@ initial();
 })();
 
 $(document).ready(function(){
-     $('#imgfile').on("change",function(){
-        file = this.files[0];
-        fr = new FileReader();
-        fr.onload = function () {
-            img = new Image();
-            img.onload = function () {
-                fabric.Image.fromURL(img.src, function (oImg) {
-                canvas.add(oImg);
-                });
-            };
-            img.src = fr.result;
-        };
-        fr.readAsDataURL(file);
-    });
-    var pf_gui = jsfeat_gui.addFolder('PF Graph Segmentation');
-    pf_gui.add(pf_options, "threshold", 20, 40000);
-    pf_gui.add(pf_options, "sigma", 0, 20);
-    pf_gui.add(pf_options, "minSize", 2, 10000);
-    var slic_gui = jsfeat_gui.addFolder('Superpixel Segmentation');
-    slic_gui.add(slic_options, "regionSize", 20, 400);
-    slic_gui.add(slic_options, "minSize", 2, 100);
-    gui_element.append(jsfeat_gui.domElement);
-    $('#segment_message').hide();
-    var load_options = {crossOrigin:"Anonymous"};
-    fabric.Image.fromURL("/static/img/test.png", function(oImg)
-    {
-        canvas.add(oImg);
-    },load_options);
-    canvas.backgroundColor = '#ffffff';
-    $('#bg-color').val('#ffffff');
-    $('#dat_gui').hide(); // unhide this element to control parameters for superpixel and pf algorithms
+    initialize_ui();
 });
 
 

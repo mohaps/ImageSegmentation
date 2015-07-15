@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block ng_control %}ng-controller="CanvasControls"{% endblock %}
 {% block page_content %}
 <section class="content">
 <div class="row large-margin">
@@ -44,7 +45,7 @@
         </div>
         <div class="m-t operations">
             <form id="image-form"  onsubmit="return false;">
-                <input type='file' id='imgfile' style="display:none"/>
+                <input type='file'  id='imgfile' style="display:none"/>
                 <a type='button' class="btn btn-app btn-default" id='btnLoad' ng-click='load_image();'><i class="fa fa-image"></i>Add image</a>
             </form>
             <button id="drawing-mode_f"
@@ -93,7 +94,6 @@
 </section>
 {% endblock %}
 
-{% block ng_control %}ng-controller="CanvasControls"{% endblock %}
 
 {% block page_js %}
     <script>

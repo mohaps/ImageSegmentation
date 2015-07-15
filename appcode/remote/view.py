@@ -36,7 +36,7 @@ def home():
     payload = {
         'gae_mode':True
     }
-    return render_template('home.html',payload = payload)
+    return render_template('editor.html',payload = payload)
 
 
 def add_views(app):

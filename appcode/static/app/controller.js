@@ -38,6 +38,22 @@ function setActiveProp(name, value) {
   canvas.renderAll();
 }
 
+function initialize_data(){
+      var layer_defs = [];
+      layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:3});
+      layer_defs.push({type:'conv', sx:5, filters:16, stride:1, pad:2, activation:'relu'});
+      layer_defs.push({type:'pool', sx:2, stride:2});
+      layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
+      layer_defs.push({type:'pool', sx:2, stride:2});
+      layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
+      layer_defs.push({type:'pool', sx:2, stride:2});
+      layer_defs.push({type:'softmax', num_classes:2});
+      net = new convnetjs.Net();
+      net.makeLayers(layer_defs);
+      trainer = new convnetjs.SGDTrainer(net, {method:'adadelta', batch_size:4, l2_decay:0.0001});
+
+}
+
 function addAccessors($scope) {
 
   $scope.getOpacity = function() {
@@ -116,8 +132,6 @@ $scope.export = function() {
         });
     }
   };
-
-
 
 
   $scope.download = function() {
@@ -320,13 +334,6 @@ $scope.deselect = function(){
 };
 
 
-$scope.segmentation_slic = function() {
-    last_algorithm = "slic";
-    slic_options.callback = callbackSegmentation;
-    $scope.refreshData();
-    SLICSegmentation(canvas_data.imageData, canvas_data.maskData ,slic_options);
-
-};
 
 $scope.renderResults = function(results){
     var context = output_canvas.getContext('2d');
@@ -359,13 +366,6 @@ $scope.renderResults = function(results){
 
 
 
-$scope.segmentation_pf = function() {
-    last_algorithm = "pf";
-    pf_options.callback = callbackSegmentation;
-    $scope.refreshData();
-    PFSegmentation(canvas_data.imageData, canvas_data.maskData, pf_options);
-    $('#segment_message').show()
-};
 
 $scope.refreshData = function(){
     var maskData, imageData;
@@ -400,20 +400,6 @@ $scope.refreshData = function(){
     canvas_data = {'maskData':maskData, 'imageData':imageData}
 };
 
-$scope.convNet = function(){
-  var layer_defs = [];
-  layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:3});
-  layer_defs.push({type:'conv', sx:5, filters:16, stride:1, pad:2, activation:'relu'});
-  layer_defs.push({type:'pool', sx:2, stride:2});
-  layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
-  layer_defs.push({type:'pool', sx:2, stride:2});
-  layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
-  layer_defs.push({type:'pool', sx:2, stride:2});
-  layer_defs.push({type:'softmax', num_classes:2});
-  net = new convnetjs.Net();
-  net.makeLayers(layer_defs);
-  trainer = new convnetjs.SGDTrainer(net, {method:'adadelta', batch_size:4, l2_decay:0.0001});
-};
 
 $scope.segment = function () {
     if(canvas.isDrawingMode){
@@ -421,8 +407,13 @@ $scope.segment = function () {
         canvas.deactivateAll().renderAll();
         $scope.$$phase || $scope.$digest();
     }
-    $scope.segmentation_slic();
-    $scope.segmentation_pf();
+    last_algorithm = "segment";
+    $scope.refreshData();
+    slic_options.callback = callbackSegmentation;
+    SLICSegmentation(canvas_data.imageData, canvas_data.maskData ,slic_options);
+    pf_options.callback = callbackSegmentation;
+    $scope.refreshData();
+    PFSegmentation(canvas_data.imageData, canvas_data.maskData, pf_options);
     $scope.renderResults(results_global[last_algorithm]);
 };
 

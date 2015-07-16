@@ -24,3 +24,4 @@ Following libraries & templates are used:
 2. https://github.com/kyamagu/js-segment-annotator/blob/master/LICENSE
 3. http://fabricjs.com/kitchensink/  
 4. http://inspirit.github.io/jsfeat/
+5. http://linkedin.github.io/hopscotch/

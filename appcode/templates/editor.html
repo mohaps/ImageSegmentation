@@ -7,6 +7,8 @@
         <div class="outer">
         <div class="middle">
         <div class="inner">
+        <button type="button" class="btn  bg-red btn-app btn-move"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i>Clean editor</button>
+        <button type="button" class="btn  bg-yellow btn-app btn-move"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
         <div ng-show="canvas.getActiveGroup()">
             <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-trash"></i>Remove</button>
             <button type="button" class="btn btn-app btn-object-action bg-yellow btn-move" id="deselect_group" ng-click="deselect()"><i class="fa fa-minus"></i>Deselect</button>
@@ -33,14 +35,10 @@
     </div>
     <div class="col-xs-5 m-t input">
         <div>
-        <button type="button" class="btn  btn-danger"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i>Clean editor</button>
         <h3 class="canvas_name">
             Editor
         </h3>
-        <button type="button" class="btn  btn-warning btn_clear"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
 
-        <div class="clear_btn">
-        </div>
         </div>
         <div class="operations">
             <form id="image-form"  onsubmit="return false;">

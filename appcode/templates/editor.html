@@ -34,12 +34,6 @@
     </div>
     </div>
     <div class="col-xs-5 m-t input">
-        <div>
-        <h3 class="canvas_name">
-            Editor
-        </h3>
-
-        </div>
         <div class="operations">
             <form id="image-form"  onsubmit="return false;">
                 <input type='file'  id='imgfile' style="display:none"/>
@@ -63,7 +57,7 @@
             </div>
             <div id="drawing-mode-wrapper"  class="drawing-mode">
             <div id="drawing-mode-options"  ng-show="getFreeDrawingMode()">
-              <h5>Line width</h5>
+              <h5>Brush width</h5>
               <input type="range" value="30" min="0" max="150" bind-value-to="drawingLineWidth">
               <!--<h5>Line color</h5>-->
               <!--<input type="color" bind-value-to="drawingLineColor">-->
@@ -79,13 +73,7 @@
         </div>
     </div>
     <div class="col-xs-5 output m-t">
-
         <div style="width:650px;">
-            <div>
-            <h3 class="canvas_name">
-            Output
-            </h3>
-            </div>
             <div class="operations_output">
             <button type="button" id="export" class="btn btn-app  btn-move btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
             <div id="status" ng-model="status" ng-show="checkStatus()" class="alert alert-info alert-dismissable">{[ status ]}

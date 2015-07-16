@@ -111,7 +111,6 @@ input[type=color] {
 .inner {
     margin-left: auto;
     margin-right: auto;
-    padding-top: 40px;
 }
 
 
@@ -133,7 +132,6 @@ input[type=color] {
 }
 
 #clear{
-    margin-top: 10px;
 }
 
 #clear_mask{

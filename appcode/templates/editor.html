@@ -10,12 +10,12 @@
         <button type="button" class="btn  bg-red btn-app btn-move"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i>Clean editor</button>
         <button type="button" class="btn  bg-yellow btn-app btn-move"  id="clear_mask" ng-click="confirmClearMasks()"><i class="fa fa-trash"></i> Clear masks</button>
         <div ng-show="canvas.getActiveGroup()">
-            <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-trash"></i>Remove</button>
+            <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected-group" ng-click="removeSelected()"><i class="fa fa-trash"></i>Delete</button>
             <button type="button" class="btn btn-app btn-object-action bg-yellow btn-move" id="deselect_group" ng-click="deselect()"><i class="fa fa-minus"></i>Deselect</button>
 
         </div>
         <div ng-show="canvas.getActiveObject()">
-            <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected" ng-click="removeSelected()"><i class="fa fa-minus"></i>Remove</button>
+            <button type="button" class="btn btn-app btn-danger btn-object-action bg-maroon btn-move" id="remove-selected" ng-click="removeSelected()"><i class="fa fa-minus"></i>Delete</button>
             <button type="button" class="btn btn-app btn-default btn-object-action btn-move" id="duplicate" ng-click="duplicate()"><i class="fa fa-copy"></i>Duplicate</button>
             <button id="send-backwards" class="btn btn-default btn-app btn-object-action btn-move" ng-click="sendBackwards()"><i class="fa fa-step-backward"></i>Move back</button>
             <button id="bring-forward" class="btn btn-default btn-app btn-object-action btn-move"  ng-click="bringForward()"><i class="fa fa-step-forward"></i>Move forward</button>

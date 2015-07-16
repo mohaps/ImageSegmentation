@@ -42,7 +42,8 @@ initialize_ui = function () {
     $("#dat_gui").hide().append(jsfeat_gui.domElement);
     canvas.backgroundColor = '#ffffff';
     $('#bg-color').val('#ffffff');
-    fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+    //fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+    canvas.renderAll();
 };
 
 
@@ -173,16 +174,46 @@ var tour = {
   id: "hello-hopscotch",
   steps: [
     {
-      title: "My content",
-      content: "Here is where I put my content.",
+      title: "Click here to add image",
+      content: "You can only upload one image at a time. But you can repeat the process to add more images and rearrange them.",
       target: document.querySelector("#btnLoad"),
       placement: "bottom"
     },
     {
-      title: "My Header",
-      content: "This is the header of my page.",
-      target: document.querySelector("canvas-wrapper"),
+      title: "Click inside to select, resize and move images",
+      content: "Use this canvas to position and resize images.",
+      target: document.querySelector("#canvas"),
       placement: "right"
+    },
+    {
+      title: "Draw foreground",
+      content: "Mark foreground regions.",
+      target: document.querySelector("#drawing-mode_f"),
+      placement: "bottom"
+    },
+    {
+      title: "Draw background",
+      content: "Mark background regions.",
+      target: document.querySelector("#drawing-mode_b"),
+      placement: "bottom"
+    },
+    {
+      title: "Click to segment",
+      content: "Once you have marked the image click to segment, you can further edit your masks and segment again.",
+      target: document.querySelector("#segment"),
+      placement: "right"
+    },
+    {
+      title: "Download",
+      content: "Click to download results",
+      target: document.querySelector("#rasterize"),
+      placement: "bottom"
+    },
+    {
+      title: "Export",
+      content: "Or export to editor and combine with additional images.",
+      target: document.querySelector("#export"),
+      placement: "bottom"
     }
   ]
 };

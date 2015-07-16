@@ -49,7 +49,7 @@ input[type=color] {
 
 #side_options, #center_options{
     text-align:center;
-    height: 700px;
+    height: 900px;
 }
 
 #side_options{
@@ -72,8 +72,18 @@ input[type=color] {
     text-align:center;
 }
 
+#btnLoad{
+    margin-left: 0 !important;
+}
+
 .operations{
+    height: 75px;
     text-align: left;
+}
+
+.operations_output{
+    height: 75px;
+    text-align: center;
 }
 
 .canvas_name {
@@ -130,15 +140,17 @@ input[type=color] {
 #segment{
     float: right;
 }
-
+#status{
+    text-align: center;
+    display: inline-block;
+    margin: 0 0 10px 10px !important;
+}
 #rasterize{
     float: right;
-    margin-top: 10px;
 }
 
 #export{
     float: left;
-    margin-top: 10px;
 }
 
 #drawing-mode-options > h5{

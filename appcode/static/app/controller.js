@@ -401,8 +401,12 @@ $scope.refreshData = function(){
     state.canvas_data = imageData;
 };
 
+$scope.checkStatus = function(){
+    return $scope.status;
+};
 
 $scope.segment = function () {
+    $scope.status = "starting segementation";
     if(canvas.isDrawingMode){
         canvas.isDrawingMode = false;
         canvas.deactivateAll().renderAll();
@@ -412,6 +416,7 @@ $scope.segment = function () {
     state.options.slic.callback = callbackSegmentation;
     SLICSegmentation(state.canvas_data, state.mask_data ,state.options.slic);
     $scope.renderResults();
+    $scope.status = "segmentation completed";
 };
 
 

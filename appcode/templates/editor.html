@@ -32,6 +32,7 @@
     </div>
     </div>
     <div class="col-xs-5 m-t input">
+        <div>
         <button type="button" class="btn  btn-danger"  id="clear" ng-click="confirmClear()"><i class="fa fa-trash"></i>Clean editor</button>
         <h3 class="canvas_name">
             Editor
@@ -40,10 +41,8 @@
 
         <div class="clear_btn">
         </div>
-        <div id="canvas-wrapper">
-            <canvas id="canvas"  width="640" height="640"></canvas>
         </div>
-        <div class="m-t operations">
+        <div class="operations">
             <form id="image-form"  onsubmit="return false;">
                 <input type='file'  id='imgfile' style="display:none"/>
                 <a type='button' class="btn btn-app btn-default" id='btnLoad' ng-click='load_image();'><i class="fa fa-image"></i>Add image</a>
@@ -73,21 +72,29 @@
             </div>
             </div>
             <button href="" class="btn btn-app btn-success" id="segment" ng-click="segment()"><i class="fa fa-arrow-circle-right"></i>Segment</button>
-
+        </div>
+        <div id="canvas-wrapper">
+            <canvas id="canvas"  width="640" height="640"></canvas>
         </div>
         <div class="m-t">
                 <div id="dat_gui" class="gui"></div>
         </div>
     </div>
     <div class="col-xs-5 output m-t">
+
         <div style="width:650px;">
-            <button type="button" id="export" class="btn btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
+            <div>
             <h3 class="canvas_name">
             Output
             </h3>
-            <button type="button" id="rasterize" class="btn btn-default bg-navy" ng-click="download()"><i class="fa fa-download"></i>Download</button>
+            </div>
+            <div class="operations_output">
+            <button type="button" id="export" class="btn btn-app btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
+            <p id="status" ng-model="status" ng-show="checkStatus()" class="alert bg-light-blue color-palette">{[ status ]}</p>
+            <button type="button" id="rasterize" class="btn btn-app btn-default bg-navy" ng-click="download()"><i class="fa fa-download"></i>Download</button>
+            </div>
             <!--<canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>-->
-            <canvas id="output_canvas" ng- width="640" height="640"></canvas>
+            <canvas id="output_canvas" width="640" height="640"></canvas>
         </div>
     </div>
 </div>
@@ -131,5 +138,6 @@
 {% endblock %}
 
 {% block page_header %}
+                <li><a>Note: Images are not uploaded to server, all processing is performed within the browser.</a></li>
                 <li><a href="https://github.com/AKSHAYUBHAT/ImageSegmentation" target="_blank" id="github"><i class="fa fa-github"></i> Github</a></li>
 {% endblock %}

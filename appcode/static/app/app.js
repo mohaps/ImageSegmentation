@@ -42,7 +42,6 @@ initialize_ui = function () {
     $("#dat_gui").hide().append(jsfeat_gui.domElement);
     canvas.backgroundColor = '#ffffff';
     $('#bg-color').val('#ffffff');
-    //fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
     canvas.renderAll();
 };
 
@@ -175,7 +174,7 @@ var tour = {
   steps: [
     {
       title: "Click here to add image",
-      content: "You can only upload one image at a time. But you can repeat the process to add more images and rearrange them.",
+      content: "You can only upload one image at a time. But you can repeat the process to add more images and rearrange them. Click to <a id='example' href='#''>add an example image</a>.",
       target: document.querySelector("#btnLoad"),
       placement: "bottom"
     },
@@ -219,9 +218,15 @@ var tour = {
 };
 
 
+
+
 $(document).ready(function(){
     initialize_ui();
     hopscotch.startTour(tour);
+    $('#example').on('click',function(event){
+    fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+    event.preventDefault();
+});
 });
 
 

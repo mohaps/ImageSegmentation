@@ -79,6 +79,10 @@ function addAccessors($scope) {
     }
   };
 
+  $scope.showTour = function(){
+      hopscotch.startTour(tour);
+  }
+
   $scope.getFill = function() {
     return getActiveStyle('fill');
   };

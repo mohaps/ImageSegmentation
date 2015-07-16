@@ -171,11 +171,18 @@ initial();
 // Define the tour!
 var tour = {
   id: "hello-hopscotch",
+  showPrevButton:true,
   steps: [
     {
       title: "Click here to add image",
       content: "You can only upload one image at a time. But you can repeat the process to add more images and rearrange them. Click to <a id='example' href='#''>add an example image</a>.",
       target: document.querySelector("#btnLoad"),
+      onShow:function(){
+        $('#example').on('click',function(event){
+        fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+        event.preventDefault();
+        });
+      },
       placement: "bottom"
     },
     {
@@ -219,14 +226,9 @@ var tour = {
 
 
 
-
 $(document).ready(function(){
     initialize_ui();
     hopscotch.startTour(tour);
-    $('#example').on('click',function(event){
-    fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
-    event.preventDefault();
-});
 });
 
 

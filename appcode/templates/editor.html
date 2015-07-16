@@ -22,11 +22,13 @@
             <button id="send-to-back" class="btn btn-default btn-app btn-object-action btn-move"  ng-click="sendToBack()"><i class="fa fa-backward"></i>Send to back</button>
             <button id="bring-to-front" class="btn btn-default btn-app btn-object-action btn-move"  ng-click="bringToFront()"><i class="fa fa-forward"></i>Bring to front</button>
             <button type="button" class="btn btn-app btn-object-action bg-yellow btn-move" id="deselect" ng-click="deselect()"><i class="fa fa-minus"></i>Deselect</button>
+            <h5>Scale</h5>
+            <input value="100" type="range" bind-value-to="scale">
             <div id="color-opacity-controls" ng-show="canvas.getActiveObject()">
                 <h5>Opacity</h5>
                 <input value="100" type="range" bind-value-to="opacity">
-                <h5>Color</h5>
-                <input type="color" bind-value-to="fill">
+                <!--<h5>Color</h5>-->
+                <!--<input type="color" bind-value-to="fill">-->
             </div>
         </div>
     </div>

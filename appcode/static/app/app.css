@@ -131,6 +131,10 @@ input[type=color] {
     width: 670px !important;
 }
 
+#drawing-mode-options{
+    margin: 0 0 0 15px;
+}
+
 #clear{
 }
 

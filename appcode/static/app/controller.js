@@ -63,6 +63,14 @@ function addAccessors($scope) {
     setActiveStyle('opacity', parseInt(value, 10) / 100);
   };
 
+  $scope.getScale = function() {
+    return (getActiveStyle('scaleX')+getActiveStyle('scaleY')) * 50;
+  };
+  $scope.setScale = function(value) {
+    setActiveStyle('scaleX', parseInt(value, 10) / 100);
+    setActiveStyle('scaleY', parseInt(value, 10) / 100);
+  };
+
   $scope.confirmClear = function() {
     if (confirm('Remove everything including images. Are you sure?')) {
       canvas.clear();
@@ -225,6 +233,12 @@ $scope.export = function() {
   $scope.setFreeDrawingMode = function(value,mode) {
     canvas.isDrawingMode = !!value;
     canvas.freeDrawingBrush.color = mode == 1 ? 'green': 'red';
+    if (value && mode == 1){
+        $scope.status = "Drawing foreground, click segment to update results."
+    }else if(value){
+        $scope.status = "Drawing background, click segment to update results."
+    }
+
     canvas.freeDrawingBrush.width = 5;
     state.current_mode = mode;
     canvas.deactivateAll().renderAll();

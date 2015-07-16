@@ -87,8 +87,10 @@
             </h3>
             </div>
             <div class="operations_output">
-            <button type="button" id="export" class="btn btn-app btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
-            <p id="status" ng-model="status" ng-show="checkStatus()" class="alert bg-light-blue color-palette">{[ status ]}</p>
+            <button type="button" id="export" class="btn btn-app  btn-move btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
+            <div id="status" ng-model="status" ng-show="checkStatus()" class="alert alert-info alert-dismissable">{[ status ]}
+                <button type="button" class="close" ng-click="disableStatus()" aria-hidden="true">×</button>
+            </div>
             <button type="button" id="rasterize" class="btn btn-app btn-default bg-navy" ng-click="download()"><i class="fa fa-download"></i>Download</button>
             </div>
             <!--<canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>-->

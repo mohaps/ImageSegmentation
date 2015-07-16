@@ -409,18 +409,22 @@ $scope.checkStatus = function(){
     return $scope.status;
 };
 
+$scope.disableStatus = function(){
+    $scope.status = "";
+};
+
 $scope.segment = function () {
-    $scope.status = "starting segementation";
+    $scope.status = "Starting segementation";
     if(canvas.isDrawingMode){
         canvas.isDrawingMode = false;
         canvas.deactivateAll().renderAll();
-        $scope.$$phase || $scope.$digest();
     }
+    $scope.$$phase || $scope.$digest();
     $scope.refreshData();
     state.options.slic.callback = callbackSegmentation;
     SLICSegmentation(state.canvas_data, state.mask_data ,state.options.slic);
     $scope.renderResults();
-    $scope.status = "segmentation completed";
+    $scope.status = "Segmentation completed";
 };
 
 

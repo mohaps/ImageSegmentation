@@ -401,6 +401,9 @@
       for (i = 0; i < currentCenters.length; ++i)
         currentCenters[i] = newCenters[i];
     }
+    //console.log(currentCenters); // compute centers.
+   // console.log(labData);   // log lab data
+    //console.log(edgeMap); // log edge map
     eliminateSmallRegions(segmentation,
                           options.minRegionSize,
                           numPixels,

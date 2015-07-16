@@ -7,10 +7,7 @@ var canvas = new fabric.Canvas('canvas'),
     height = canvas.getHeight(),
     state = {
         'current_mode':null,
-        'last_algorithm':'',
-        'results':{
-
-        },
+        'results':{},
         net:null,
         canvas_data:null,
         mask_data:null,
@@ -171,8 +168,29 @@ initial();
   });
 })();
 
+// Define the tour!
+var tour = {
+  id: "hello-hopscotch",
+  steps: [
+    {
+      title: "My content",
+      content: "Here is where I put my content.",
+      target: document.querySelector("#btnLoad"),
+      placement: "bottom"
+    },
+    {
+      title: "My Header",
+      content: "This is the header of my page.",
+      target: document.querySelector("canvas-wrapper"),
+      placement: "right"
+    }
+  ]
+};
+
+
 $(document).ready(function(){
     initialize_ui();
+    hopscotch.startTour(tour);
 });
 
 

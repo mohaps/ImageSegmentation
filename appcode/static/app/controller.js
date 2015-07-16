@@ -325,7 +325,7 @@ var callbackSegmentation  = function(results){
                     segments[value].min_y = y
                 }
         }
-        state.results[state.last_algorithm] = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
+        state.results = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
 };
 
 $scope.deselect = function(){
@@ -335,7 +335,8 @@ $scope.deselect = function(){
 
 
 
-$scope.renderResults = function(results){
+$scope.renderResults = function(){
+    var results = state.results;
     var context = output_canvas.getContext('2d');
     var imageData = context.createImageData(output_canvas.width, output_canvas.height);
     var data = imageData.data;
@@ -407,13 +408,10 @@ $scope.segment = function () {
         canvas.deactivateAll().renderAll();
         $scope.$$phase || $scope.$digest();
     }
-    state.last_algorithm = "segment";
     $scope.refreshData();
-    //state.options.slic.callback = callbackSegmentation;
-    state.options.pf.callback = callbackSegmentation;
-    //SLICSegmentation(state.canvas_data, state.mask_data ,state.options.slic);
-    PFSegmentation(state.canvas_data, state.mask_data, state.options.pf);
-    $scope.renderResults(state.results[state.last_algorithm]);
+    state.options.slic.callback = callbackSegmentation;
+    SLICSegmentation(state.canvas_data, state.mask_data ,state.options.slic);
+    $scope.renderResults();
 };
 
 
@@ -425,10 +423,10 @@ $scope.addOnClick = function(event) {
 			mouseX = event.offsetX;
 			mouseY = event.offsetY;
 		}
-        if (state.last_algorithm)
+        if (state.results)
         {
-        var segment = state.results[state.last_algorithm].segments[state.results[state.last_algorithm].indexMap[width*mouseY+mouseX]],
-            segment_index = state.results[state.last_algorithm].indexMap[width*mouseY+mouseX],
+        var segment = state.results.segments[state.results.indexMap[width*mouseY+mouseX]],
+            segment_index = state.results.indexMap[width*mouseY+mouseX],
             c = document.createElement('canvas');
         c.setAttribute('id', '_temp_canvas');
         c.width = segment.max_x - segment.min_x + 1;
@@ -436,7 +434,7 @@ $scope.addOnClick = function(event) {
         var context = c.getContext('2d'),
             imageData = context.createImageData(c.width, c.height),
             data = imageData.data,
-            indexMap = state.results[state.last_algorithm].indexMap,
+            indexMap = state.results.indexMap,
             rgbData = state.canvas_data.data;
         var i_x,i_y;
         k = 0;

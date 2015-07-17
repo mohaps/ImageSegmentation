@@ -78,9 +78,6 @@
         <div style="width:650px;">
             <div class="operations_output">
             <button type="button" id="export" class="btn btn-app  btn-move btn-default bg-green" ng-click="export()"><i class="fa fa-arrow-left"></i>Export</button>
-            <div id="status" ng-model="status" ng-show="checkStatus()" class="alert alert-info alert-dismissable">{[ status ]}
-                <button type="button" class="close" ng-click="disableStatus()" aria-hidden="true">×</button>
-            </div>
             <button type="button" id="rasterize" class="btn btn-app btn-default bg-navy" ng-click="download()"><i class="fa fa-download"></i>Download</button>
             </div>
             <!--<canvas id="output_canvas" ng-click="addOnClick($event)" width="640" height="640"></canvas>-->
@@ -128,6 +125,11 @@
 {% endblock %}
 
 {% block page_header %}
+                <li>
+                <div id="status" ng-model="status" ng-show="checkStatus()" class="alert alert-info alert-dismissable">{[ status ]}
+                    <button type="button" class="close" ng-click="disableStatus()" aria-hidden="true">×</button>
+                </div>
+                </li>
                 <li><a>Note: Images are not uploaded to server, all processing is performed within the browser.</a></li>
                 <li><a ng-click="showTour()" href="#" id="tutorial"><i class="fa fa-help"></i>Tutorial</a></li>
                 <li><a href="https://github.com/AKSHAYUBHAT/ImageSegmentation" target="_blank" id="github"><i class="fa fa-github"></i> Github</a></li>

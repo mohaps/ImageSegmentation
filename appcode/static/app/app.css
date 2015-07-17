@@ -149,10 +149,11 @@ input[type=color] {
     float: right;
 }
 #status{
-    width: 60%;
-    text-align: center;
-    display: inline-block;
-    margin: 3px 0 0px 0 !important;
+  width: 700px;
+  text-align: left;
+  display: inline-block;
+  margin: 3px 5px 3px 5px !important;
+  padding: 10px 30px 10px 10px !important;
 }
 #rasterize{
     float: right;

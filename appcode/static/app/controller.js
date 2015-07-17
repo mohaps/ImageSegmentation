@@ -38,7 +38,7 @@ function setActiveProp(name, value) {
   canvas.renderAll();
 }
 
-function initialize_data(){
+function initialize_smart_eraser(){
       var layer_defs = [];
       layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:3});
       layer_defs.push({type:'conv', sx:5, filters:16, stride:1, pad:2, activation:'relu'});
@@ -47,11 +47,27 @@ function initialize_data(){
       layer_defs.push({type:'pool', sx:2, stride:2});
       layer_defs.push({type:'conv', sx:5, filters:20, stride:1, pad:2, activation:'relu'});
       layer_defs.push({type:'pool', sx:2, stride:2});
-      layer_defs.push({type:'softmax', num_classes:2});
+      layer_defs.push({type:'softmax', num_classes:1});
       state.net = new convnetjs.Net();
       state.net.makeLayers(layer_defs);
       trainer = new convnetjs.SGDTrainer(net, {method:'adadelta', batch_size:4, l2_decay:0.0001});
+}
 
+
+function set_check_image_movement(){
+    // set image positions or check them
+    if(!state.recompute) // if recompute is true let it remain true.
+    {
+    old_positions_joined = state.images.join();
+    new_positions = [];
+    canvas.forEachObject(function(obj){
+        if (obj.isType('image')){
+            new_positions.push([obj.scaleX,obj.scaleY,obj.top,obj.left,obj.opacity])
+        }
+    });
+    state.images = new_positions;
+    state.recompute = new_positions.join() != old_positions_joined
+    }
 }
 
 function addAccessors($scope) {
@@ -89,7 +105,7 @@ function addAccessors($scope) {
 
   $scope.showTour = function(){
       hopscotch.startTour(tour);
-  }
+  };
 
   $scope.getFill = function() {
     return getActiveStyle('fill');
@@ -141,6 +157,7 @@ $scope.export = function() {
             canvas.add(img);
             img.bringToFront();
             canvas.renderAll();
+            state.recompute = true;
         });
     }
   };
@@ -290,6 +307,7 @@ $scope.export = function() {
 
   $scope.load_image = function(){
     var input, file, fr, img;
+    state.recompute = true;
     input = document.getElementById('imgfile');
     input.click();
   };
@@ -387,15 +405,20 @@ $scope.renderResults = function(){
 
 
 $scope.refreshData = function(){
-    var maskData, imageData;
-    canvas.deactivateAll().renderAll();
-    canvas.forEachObject(function(obj){
-        if (!obj.isType('image')){
-            obj.opacity = 0;
-        }
-    });
-    canvas.renderAll();
-    imageData = canvas.getContext('2d').getImageData(0, 0, height, width);
+    if (state.recompute){
+        state.images = [];
+        canvas.deactivateAll().renderAll();
+        canvas.forEachObject(function(obj){
+            if (!obj.isType('image')){
+                obj.opacity = 0;
+            }
+        });
+        canvas.renderAll();
+        state.canvas_data = canvas.getContext('2d').getImageData(0, 0, height, width);
+    }
+    else{
+        console.log("did not recompute")
+    }
     canvas.forEachObject(function(obj){
         if (!obj.isType('image')){
             obj.opacity = 1.0;
@@ -412,11 +435,10 @@ $scope.refreshData = function(){
             obj.opacity = 1.0;
         }
         else{
-            obj.opacity = 0.7;
+            obj.opacity = 0.6;
         }
     });
     canvas.renderAll();
-    state.canvas_data = imageData;
 };
 
 $scope.checkStatus = function(){
@@ -434,11 +456,22 @@ $scope.segment = function () {
         canvas.deactivateAll().renderAll();
     }
     $scope.$$phase || $scope.$digest();
+    set_check_image_movement();
     $scope.refreshData();
+    if (state.recompute) {
+        // update this after segmentation is factored out of the callback.
+    }
     state.options.slic.callback = callbackSegmentation;
-    SLICSegmentation(state.canvas_data, state.mask_data ,state.options.slic);
+    SLICSegmentation(state.canvas_data, state.mask_data, state.options.slic);
+    $scope.updateClusters();
     $scope.renderResults();
     $scope.status = "Segmentation completed";
+    state.recompute = false;
+};
+
+$scope.updateClusters = function(){
+  // fill this up
+    var implement;
 };
 
 

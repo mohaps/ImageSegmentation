@@ -6,7 +6,9 @@ var canvas = new fabric.Canvas('canvas'),
     width = canvas.getWidth(),
     height = canvas.getHeight(),
     state = {
+        'images':[],
         'current_mode':null,
+        'recompute':true,
         'results':{},
         net:null,
         canvas_data:null,
@@ -180,6 +182,7 @@ var tour = {
       onShow:function(){
         $('#example').on('click',function(event){
         fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+        state.recompute = true;
         event.preventDefault();
         });
       },

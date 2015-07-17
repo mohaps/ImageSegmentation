@@ -552,6 +552,7 @@ cveditor.controller('CanvasControls', function($scope) {
   $scope.canvas = canvas;
   $scope.output_canvas = output_canvas;
   $scope.getActiveStyle = getActiveStyle;
+  $scope.status = "Note: Images are not uploaded to server, all processing is performed within the browser.";
   addAccessors($scope);
   watchCanvas($scope);
 });

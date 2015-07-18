@@ -7,6 +7,7 @@ var canvas = new fabric.Canvas('canvas'),
     height = canvas.getHeight(),
     state = {
         'images':[],
+        'masks_present':false,
         'current_mode':null,
         'recompute':true,
         'results':{},
@@ -23,25 +24,26 @@ var canvas = new fabric.Canvas('canvas'),
 initialize_ui = function () {
     var jsfeat_gui = new dat.GUI({ autoPlace: false });
     var pf_opt, slic_opt;
-    pf_opt = function () {
-    this.sigma = 0;
-    this.threshold = 1000;
-    this.minSize = 1000;
-    };
+    //pf_opt = function () {
+    //this.sigma = 0;
+    //this.threshold = 1000;
+    //this.minSize = 1000;
+    //};
     slic_opt = function () {
     this.regionSize = 40;
     this.minSize = 20;
     };
-    state.options.pf = new pf_opt();
+    //state.options.pf = new pf_opt();
     state.options.slic = new slic_opt();
-    var pf_gui = jsfeat_gui.addFolder('PF Graph Segmentation');
-    pf_gui.add(state.options.pf, "threshold", 20, 40000);
-    pf_gui.add(state.options.pf, "sigma", 0, 20);
-    pf_gui.add(state.options.pf, "minSize", 2, 10000);
     var slic_gui = jsfeat_gui.addFolder('Superpixel Segmentation');
     slic_gui.add(state.options.slic, "regionSize", 20, 400);
     slic_gui.add(state.options.slic, "minSize", 2, 100);
-    $("#dat_gui").hide().append(jsfeat_gui.domElement);
+    //var pf_gui = jsfeat_gui.addFolder('PF Graph Segmentation (Not Used)');
+    //pf_gui.add(state.options.pf, "threshold", 20, 40000);
+    //pf_gui.add(state.options.pf, "sigma", 0, 20);
+    //pf_gui.add(state.options.pf, "minSize", 2, 10000);
+
+    $("#dat_gui").append(jsfeat_gui.domElement);
     canvas.backgroundColor = '#ffffff';
     $('#bg-color').val('#ffffff');
     canvas.renderAll();

@@ -56,6 +56,11 @@ function initialize_smart_eraser(){
 
 function set_check_image_movement(){
     // set image positions or check them
+    canvas.forEachObject(function(obj){
+        if (!obj.isType('image')){
+            state.masks_present = true;
+        }
+    });
     if(!state.recompute) // if recompute is true let it remain true.
     {
     old_positions_joined = state.images.join();
@@ -100,11 +105,20 @@ function addAccessors($scope) {
                 obj.remove()
             }
         });
+    state.masks_present = false;
     }
   };
 
   $scope.showTour = function(){
       hopscotch.startTour(tour);
+  };
+
+  $scope.showDev = function(){
+      $scope.dev = !$scope.dev;
+  };
+
+  $scope.getDev = function(){
+      return $scope.dev
   };
 
   $scope.getFill = function() {
@@ -152,8 +166,6 @@ $scope.export = function() {
     }
     else {
       fabric.Image.fromURL(output_canvas.toDataURL(), function(img) {
-            img.left = 5;
-            img.top = 5;
             canvas.add(img);
             img.bringToFront();
             canvas.renderAll();
@@ -450,23 +462,28 @@ $scope.disableStatus = function(){
 };
 
 $scope.segment = function () {
-    $scope.status = "Starting segementation";
-    if(canvas.isDrawingMode){
-        canvas.isDrawingMode = false;
-        canvas.deactivateAll().renderAll();
-    }
-    $scope.$$phase || $scope.$digest();
     set_check_image_movement();
-    $scope.refreshData();
-    if (state.recompute) {
-        // update this after segmentation is factored out of the callback.
+    if (state.masks_present) {
+        $scope.status = "Starting segementation";
+        if(canvas.isDrawingMode){
+            canvas.isDrawingMode = false;
+            canvas.deactivateAll().renderAll();
+        }
+        $scope.$$phase || $scope.$digest();
+        $scope.refreshData();
+        if (state.recompute) {
+            // update this after segmentation is factored out of the callback.
+        }
+        state.options.slic.callback = callbackSegmentation;
+        SLICSegmentation(state.canvas_data, state.mask_data, state.options.slic);
+        $scope.updateClusters();
+        $scope.renderResults();
+        $scope.status = "Segmentation completed";
+        state.recompute = false;
     }
-    state.options.slic.callback = callbackSegmentation;
-    SLICSegmentation(state.canvas_data, state.mask_data, state.options.slic);
-    $scope.updateClusters();
-    $scope.renderResults();
-    $scope.status = "Segmentation completed";
-    state.recompute = false;
+    else {
+        $scope.status = "Please mark background and foreground !! "
+    }
 };
 
 $scope.updateClusters = function(){
@@ -552,6 +569,7 @@ cveditor.controller('CanvasControls', function($scope) {
   $scope.canvas = canvas;
   $scope.output_canvas = output_canvas;
   $scope.getActiveStyle = getActiveStyle;
+  $scope.dev = false;
   $scope.status = "Note: Images are not uploaded to server, all processing is performed within the browser.";
   addAccessors($scope);
   watchCanvas($scope);

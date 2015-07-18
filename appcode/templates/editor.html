@@ -71,7 +71,7 @@
             <canvas id="canvas"  width="640" height="640"></canvas>
         </div>
         <div class="m-t">
-                <div id="dat_gui" class="gui"></div>
+                <div id="dat_gui" class="gui" ng-show="getDev()"></div>
         </div>
     </div>
     <div class="col-xs-5 output m-t">
@@ -130,6 +130,7 @@
                     <button type="button" class="close" ng-click="disableStatus()" aria-hidden="true">×</button>
                 </div>
                 </li>
+                <li><a ng-click="showDev()" href="#" id="dev"><i class="fa fa-help"></i>{[ dev ? 'Hide' : 'Show' ]} Developer options</a></li>
                 <li><a ng-click="showTour()" href="#" id="tutorial"><i class="fa fa-help"></i>Tutorial</a></li>
                 <li><a href="https://github.com/AKSHAYUBHAT/ImageSegmentation" target="_blank" id="github"><i class="fa fa-github"></i> Github</a></li>
 {% endblock %}

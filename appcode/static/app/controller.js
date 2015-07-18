@@ -344,7 +344,7 @@ $scope.updateClusters = function(){
             {
                 segments[value].mask.f++;
             }
-            if (mask[4 * i + 0] == 128 && mask[4 * i + 1] == 0)
+            if (mask[4 * i + 0] > 0 && mask[4 * i + 1] == 0)
             {
                 segments[value].mask.b++;
             }

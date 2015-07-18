@@ -330,16 +330,65 @@ $scope.updateCanvas = function () {
     });
 };
 
+$scope.updateClusters = function(){
+    var mask = state.mask_data.data,
+        segments = state.results.segments,
+        indexMap = state.results.indexMap;
+    state.results.unknown = [];
+    state.results.mixed = [];
+    state.results.foreground = [];
+    state.results.background = [];
+    for (var i = 0; i < indexMap.length; ++i) {
+        var value = indexMap[i];
+            if (mask[4 * i + 0] == 0 && mask[4 * i + 1] == 128)
+            {
+                segments[value].mask.f++;
+            }
+            if (mask[4 * i + 0] == 128 && mask[4 * i + 1] == 0)
+            {
+                segments[value].mask.b++;
+            }
+    }
+    for(var s in segments){
+        seg = segments[s];
+        if (seg.mask.f > 0 && seg.mask.b == 0){
+            seg.foreground = true;
+            seg.unknown = false;
+            seg.mixed = false;
+            state.results.foreground.push(seg)
+        }
+        else if (seg.mask.b > 0 && seg.mask.f == 0){
+            seg.foreground = false;
+            seg.unknown = false;
+            seg.mixed = false;
+            state.results.background.push(seg)
+        }
+        else if (seg.mask.b > 0 && seg.mask.f > 0){
+            seg.foreground = false;
+            seg.unknown = false;
+            seg.mixed = true;
+            state.results.mixed.push(seg)
+        }
+        else{
+            seg.foreground = false;
+            seg.unknown = true;
+            seg.mixed = false;
+            state.results.unknown.push(seg)
+
+        }
+    }
+};
+
+
 
 var callbackSegmentation  = function(results){
-        var mask = state.mask_data.data;
-        var segments = {};
+        results.segments = {};
         var w = output_canvas.width,h= output_canvas.height;
         for (var i = 0; i < results.indexMap.length; ++i) {
             var value = results.indexMap[i];
-            if (!segments.hasOwnProperty(value))
+            if (!results.segments.hasOwnProperty(value))
             {
-                segments[value] = {
+                results.segments[value] = {
                     'min_pixel':i,
                     'max_pixel':i,
                     'min_x':w+1,
@@ -349,31 +398,23 @@ var callbackSegmentation  = function(results){
                     'mask':{'b':0,'f':0}
                     }
             }
-                if (mask[4 * i + 0] == 0 && mask[4 * i + 1] == 128)
-                {
-                    segments[value].mask.f++;
-                }
-                if (mask[4 * i + 0] == 128 && mask[4 * i + 1] == 0)
-                {
-                    segments[value].mask.b++;
-                }
-                segments[value].max_pixel = i;
+                results.segments[value].max_pixel = i;
                 var y = Math.floor(i/w),
                     x = (i % w);
-                if (x > segments[value].max_x){
-                    segments[value].max_x = x
+                if (x > results.segments[value].max_x){
+                    results.segments[value].max_x = x
                 }
-                if (x < segments[value].min_x){
-                    segments[value].min_x = x
+                if (x < results.segments[value].min_x){
+                    results.segments[value].min_x = x
                 }
-                if (y > segments[value].max_y){
-                    segments[value].max_y = y
+                if (y > results.segments[value].max_y){
+                    results.segments[value].max_y = y
                 }
-                if (y < segments[value].min_y){
-                    segments[value].min_y = y
+                if (y < results.segments[value].min_y){
+                    results.segments[value].min_y = y
                 }
         }
-        state.results = {indexMap:results.indexMap,segments:segments,rgbData:results.rgbData};
+        state.results = results;
 };
 
 $scope.deselect = function(){
@@ -389,19 +430,12 @@ $scope.renderResults = function(){
     var imageData = context.createImageData(output_canvas.width, output_canvas.height);
     var data = imageData.data;
     for (var i = 0; i < results.indexMap.length; ++i) {
-        k = results.indexMap[i];
-        if (results.segments[k].mask.f > 0 && results.segments[k].mask.b  == 0) {
-            data[4 * i + 0] = results.rgbData[4 * i + 0];
-            data[4 * i + 1] = results.rgbData[4 * i + 1];
-            data[4 * i + 2] = results.rgbData[4 * i + 2];
-            data[4 * i + 3] = 255;
-        }
-        else if(results.segments[k].mask.f> 0 && results.segments[k].mask.b > 0)
+        if (results.segments[results.indexMap[i]].foreground)
         {
             data[4 * i + 0] = results.rgbData[4 * i + 0];
             data[4 * i + 1] = results.rgbData[4 * i + 1];
             data[4 * i + 2] = results.rgbData[4 * i + 2];
-            data[4 * i + 3] = 125;
+            data[4 * i + 3] = 255;
         }
         else{
             data[4 * i + 3] = 0;
@@ -486,10 +520,6 @@ $scope.segment = function () {
     }
 };
 
-$scope.updateClusters = function(){
-  // fill this up
-    var implement;
-};
 
 
 $scope.addOnClick = function(event) {

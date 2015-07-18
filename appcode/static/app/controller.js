@@ -379,7 +379,13 @@ $scope.updateClusters = function(){
     }
 };
 
+$scope.renderMixed = function(){
 
+};
+
+$scope.renderUnknown = function(){
+
+};
 
 var callbackSegmentation  = function(results){
         results.segments = {};

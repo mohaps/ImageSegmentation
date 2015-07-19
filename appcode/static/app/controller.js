@@ -236,7 +236,7 @@ $scope.export = function() {
 
   };
 
-
+mover_cursor = function(options) {yax.css({'top': options.e.y + delta_top,'left': options.e.x + delta_left});};
 
 
   $scope.setFreeDrawingMode = function(value,mode) {
@@ -247,7 +247,14 @@ $scope.export = function() {
     }else if(value){
         $scope.status = "Drawing background, click segment to update results."
     }
-
+    if(canvas.isDrawingMode){
+        yax.show();
+        canvas.on('mouse:move',mover_cursor);
+    }
+   else{
+        yax.hide();
+        canvas.off('mouse:move',mover_cursor);
+    }
     canvas.freeDrawingBrush.width = 5;
     $scope.current_mode = mode;
     canvas.deactivateAll().renderAll();
@@ -392,11 +399,46 @@ $scope.renderSuperpixels = function(){
 };
 
 $scope.renderMixed = function(){
+    var results = state.results;
+    var context = output_canvas.getContext('2d');
+    var imageData = context.createImageData(output_canvas.width, output_canvas.height);
+    var data = imageData.data;
+    for (var i = 0; i < results.indexMap.length; ++i) {
+        if (results.segments[results.indexMap[i]].mixed)
+        {
+            data[4 * i + 0] = results.rgbData[4 * i + 0];
+            data[4 * i + 1] = results.rgbData[4 * i + 1];
+            data[4 * i + 2] = results.rgbData[4 * i + 2];
+            data[4 * i + 3] = 255;
+        }
+        else{
+            data[4 * i + 3] = 0;
+        }
+    }
+    context.putImageData(imageData, 0, 0);
 
 };
 
 $scope.renderUnknown = function(){
+    var results = state.results;
+    var context = output_canvas.getContext('2d');
+    var imageData = context.createImageData(output_canvas.width, output_canvas.height);
+    var data = imageData.data;
+    for (var i = 0; i < results.indexMap.length; ++i) {
+        if (results.segments[results.indexMap[i]].unknown)
+        {
+            data[4 * i + 0] = results.rgbData[4 * i + 0];
+            data[4 * i + 1] = res
 
+            ults.rgbData[4 * i + 1];
+            data[4 * i + 2] = results.rgbData[4 * i + 2];
+            data[4 * i + 3] = 255;
+        }
+        else{
+            data[4 * i + 3] = 0;
+        }
+    }
+    context.putImageData(imageData, 0, 0);
 };
 
 var callbackSegmentation  = function(results){
@@ -592,6 +634,7 @@ $scope.check_movement = function(){
 
 
 $scope.segment = function () {
+    $scope.setFreeDrawingMode(false,$scope.current_mode);
     $scope.check_movement();
     if (state.masks_present) {
         $scope.status = "Starting segementation";
@@ -695,7 +738,12 @@ function watchCanvas($scope) {
     .on('selection:cleared', updateScope);
 }
 
+
+
 cveditor.controller('CanvasControls', function($scope) {
+  $scope.yax = $('#yaxis');
+  delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left;
+  delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top;
   $scope.canvas = canvas;
   $scope.output_canvas = output_canvas;
   $scope.getActiveStyle = getActiveStyle;

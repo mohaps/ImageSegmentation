@@ -89,6 +89,7 @@
     </div>
 </div>
 </section>
+<div id="yaxis"></div>
 {% endblock %}
 
 
@@ -131,7 +132,7 @@
 {% block page_header %}
                 <li>
                 <div id="status" ng-model="status" ng-show="checkStatus()" class="alert alert-info alert-dismissable">{[ status ]}
-                    <button type="button" class="close" ng-click="disableStatus()" aria-hidden="true">×</button>
+                    <button type="button" class="close" ng-click="disableStatus()" aria-hidden="true">x</button>
                 </div>
                 </li>
                 <li><a ng-click="showDev()" href="#" id="dev"><i class="fa fa-help"></i>{[ dev ? 'Hide' : 'Show' ]} Developer options</a></li>

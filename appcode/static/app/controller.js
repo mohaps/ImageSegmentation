@@ -54,26 +54,6 @@ function initialize_smart_eraser(){
 }
 
 
-function set_check_image_movement(){
-    // set image positions or check them
-    canvas.forEachObject(function(obj){
-        if (!obj.isType('image')){
-            state.masks_present = true;
-        }
-    });
-    if(!state.recompute) // if recompute is true let it remain true.
-    {
-    old_positions_joined = state.images.join();
-    new_positions = [];
-    canvas.forEachObject(function(obj){
-        if (obj.isType('image')){
-            new_positions.push([obj.scaleX,obj.scaleY,obj.top,obj.left,obj.opacity])
-        }
-    });
-    state.images = new_positions;
-    state.recompute = new_positions.join() != old_positions_joined
-    }
-}
 
 function addAccessors($scope) {
 
@@ -389,7 +369,8 @@ $scope.renderUnknown = function(){
 
 var callbackSegmentation  = function(results){
         results.segments = {};
-        var w = output_canvas.width,h= output_canvas.height;
+        var w = width,
+            h= height;
         for (var i = 0; i < results.indexMap.length; ++i) {
             var value = results.indexMap[i];
             if (!results.segments.hasOwnProperty(value))
@@ -458,7 +439,6 @@ $scope.renderResults = function(){
 
 $scope.refreshData = function(){
     if (state.recompute){
-        state.images = [];
         canvas.deactivateAll().renderAll();
         canvas.forEachObject(function(obj){
             if (!obj.isType('image')){
@@ -501,8 +481,34 @@ $scope.disableStatus = function(){
     $scope.status = "";
 };
 
+$scope.check_movement = function(){
+    // set image positions or check them
+    if ($scope.dev){
+        // Always recompute if dev mode is enabled.
+        state.recompute = true;
+    }
+    canvas.forEachObject(function(obj){
+        if (!obj.isType('image')){
+            state.masks_present = true;
+        }
+    });
+    old_positions_joined = state.images.join();
+    state.images = [];
+    canvas.forEachObject(function(obj){
+        if (obj.isType('image')){
+            state.images.push([obj.scaleX,obj.scaleY,obj.top,obj.left,obj.opacity])
+        }
+    });
+    if(!state.recompute) // if recompute is true let it remain true.
+    {
+        state.recompute = state.images.join() != old_positions_joined;
+        console.log(state.images);
+    }
+};
+
+
 $scope.segment = function () {
-    set_check_image_movement();
+    $scope.check_movement();
     if (state.masks_present) {
         $scope.status = "Starting segementation";
         if(canvas.isDrawingMode){
@@ -511,11 +517,15 @@ $scope.segment = function () {
         }
         $scope.$$phase || $scope.$digest();
         $scope.refreshData();
-        if (state.recompute) {
-            // update this after segmentation is factored out of the callback.
+        if (state.recompute)
+        {
+            state.options.slic.callback = callbackSegmentation;
+            SLICSegmentation(state.canvas_data, state.mask_data, state.options.slic);
+            console.log("recomputing segmentation")
         }
-        state.options.slic.callback = callbackSegmentation;
-        SLICSegmentation(state.canvas_data, state.mask_data, state.options.slic);
+        else{
+            console.log("Did not recompute, using previously computed superpixels.")
+        }
         $scope.updateClusters();
         $scope.renderResults();
         $scope.status = "Segmentation completed";

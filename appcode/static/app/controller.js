@@ -477,6 +477,13 @@ var callbackSegmentation  = function(results){
                 results.segments[current].min_y = y
             }
         }
+        for(var s in results.segments){
+            results.segments[s].edges = {};
+            for(var k in results.segments[s].neighbors){
+                if(results.segments[s].neighbors[k] > 0 && k != s)
+                    results.segments[s].edges[k] = results.segments[s].neighbors[k]
+            }
+        }
         state.results = results;
 };
 

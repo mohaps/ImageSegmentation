@@ -174,6 +174,7 @@
       centers[region*5+3] = centers[region*5+3] * iMass;
       centers[region*5+4] = centers[region*5+4] * iMass;
     }
+    //console.log(centers)
   }
 
   // Remove small superpixels and assign them the nearest superpixel label.
@@ -196,6 +197,7 @@
         xp,
         yp,
         direction;
+    //console.log(segmentation)
     for (pixel = 0; pixel < numPixels; pixel++) {
       if (cleaned[pixel]) continue;
       label = segmentation[pixel];

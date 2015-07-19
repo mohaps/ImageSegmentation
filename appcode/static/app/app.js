@@ -8,7 +8,6 @@ var canvas = new fabric.Canvas('canvas'),
     state = {
         'images':[],
         'masks_present':false,
-        'current_mode':null,
         'recompute':true,
         'results':{},
         net:null,

@@ -41,6 +41,7 @@ canvas
 input[type=range] {
     display: inline;
     width: 100px;
+    margin-bottom: 10px;
 }
 
 input[type=color] {
@@ -53,7 +54,8 @@ input[type=color] {
 }
 
 #side_options{
-    width:110px;
+    width:90px;
+    padding-left: 3px;
 }
 
 #center_options .btn-app {
@@ -64,9 +66,7 @@ input[type=color] {
 }
 .btn-move{
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 }
 .output, .input{
     text-align:center;

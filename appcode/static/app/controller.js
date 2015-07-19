@@ -228,7 +228,7 @@ $scope.export = function() {
 
   $scope.getFreeDrawingMode = function(mode) {
       if (mode){
-        return canvas.isDrawingMode == false || mode != state.current_mode ? false : true;
+        return canvas.isDrawingMode == false || mode != $scope.current_mode ? false : true;
       }
       else{
           return canvas.isDrawingMode
@@ -249,7 +249,7 @@ $scope.export = function() {
     }
 
     canvas.freeDrawingBrush.width = 5;
-    state.current_mode = mode;
+    $scope.current_mode = mode;
     canvas.deactivateAll().renderAll();
     $scope.$$phase || $scope.$digest();
   };
@@ -318,6 +318,12 @@ $scope.updateClusters = function(){
     state.results.mixed = [];
     state.results.foreground = [];
     state.results.background = [];
+    for(var s in segments) {
+        seg = segments[s];
+        seg.mask.f = 0;
+        seg.mask.b = 0;
+    }
+
     for (var i = 0; i < indexMap.length; ++i) {
         var value = indexMap[i];
             if (mask[4 * i + 0] == 0 && mask[4 * i + 1] == 128)
@@ -357,6 +363,20 @@ $scope.updateClusters = function(){
 
         }
     }
+};
+
+$scope.renderSuperpixels = function(){
+    var results = state.results;
+    var context = output_canvas.getContext('2d');
+    var imageData = context.createImageData(output_canvas.width, output_canvas.height);
+    var data = imageData.data;
+    for (var i = 0; i < results.indexMap.length; ++i) {
+            data[4 * i + 0] = (results.indexMap[i]*5)%255;
+            data[4 * i + 1] = (results.indexMap[i]*25)%255;
+            data[4 * i + 2] = (results.indexMap[i]*85)%255;
+            data[4 * i + 3] = 255;
+    }
+    context.putImageData(imageData, 0, 0);
 };
 
 $scope.renderMixed = function(){
@@ -502,7 +522,6 @@ $scope.check_movement = function(){
     if(!state.recompute) // if recompute is true let it remain true.
     {
         state.recompute = state.images.join() != old_positions_joined;
-        console.log(state.images);
     }
 };
 
@@ -617,6 +636,7 @@ cveditor.controller('CanvasControls', function($scope) {
   $scope.getActiveStyle = getActiveStyle;
   $scope.dev = false;
   $scope.status = "Note: Images are not uploaded to server, all processing is performed within the browser.";
+  $scope.current_mode = null;
   addAccessors($scope);
   watchCanvas($scope);
 });

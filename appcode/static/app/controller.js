@@ -425,43 +425,45 @@ var callbackSegmentation  = function(results){
             {
                 console.log(["Error?",i,x + y*w])
             }
-            if (i+1 < l )
-            {
-                results.segments[current].neighbors[results.indexMap[i+1]] += 1
-            }
-            if (i-1 > 0)
-            {
-                results.segments[current].neighbors[results.indexMap[i-1]] += 1
-            }
-            n = x + (y+1)*w;
-            if (n >= 0 && n < l)
-            {
-                results.segments[current].neighbors[results.indexMap[n]] += 1
-            }
-            n = x + 1 + (y+1)*w;
-            if (n >= 0 && n < l)
-            {
-                results.segments[current].neighbors[results.indexMap[n]] += 1
-            }
-            n = x - 1 + (y+1)*w;
-            if (n >= 0 && n < l)
-            {
-                results.segments[current].neighbors[results.indexMap[n]] += 1
-            }
-            n = x + (y-1)*w;
-            if (n >= 0 && n < l)
-            {
-                results.segments[current].neighbors[results.indexMap[n]] += 1
-            }
-            n = x + 1 + (y-1)*w;
-            if (n >= 0 && n < l)
-            {
-                results.segments[current].neighbors[results.indexMap[n]] += 1
-            }
-            n = x - 1 + (y-1)*w;
-            if (n >= 0 && n < l)
-            {
-                results.segments[current].neighbors[results.indexMap[n]] += 1
+            if (x > 0 && y > 0 && x < w-1 && y < h-1){ // Ignoring all pixels on the image border
+                if (i+1 < l )
+                {
+                    results.segments[current].neighbors[results.indexMap[i+1]] += 1
+                }
+                if (i-1 > 0)
+                {
+                    results.segments[current].neighbors[results.indexMap[i-1]] += 1
+                }
+                n = x + (y+1)*w;
+                if (n >= 0 && n < l)
+                {
+                    results.segments[current].neighbors[results.indexMap[n]] += 1
+                }
+                n = x + 1 + (y+1)*w;
+                if (n >= 0 && n < l)
+                {
+                    results.segments[current].neighbors[results.indexMap[n]] += 1
+                }
+                n = x - 1 + (y+1)*w;
+                if (n >= 0 && n < l)
+                {
+                    results.segments[current].neighbors[results.indexMap[n]] += 1
+                }
+                n = x + (y-1)*w;
+                if (n >= 0 && n < l)
+                {
+                    results.segments[current].neighbors[results.indexMap[n]] += 1
+                }
+                n = x + 1 + (y-1)*w;
+                if (n >= 0 && n < l)
+                {
+                    results.segments[current].neighbors[results.indexMap[n]] += 1
+                }
+                n = x - 1 + (y-1)*w;
+                if (n >= 0 && n < l)
+                {
+                    results.segments[current].neighbors[results.indexMap[n]] += 1
+                }
             }
             results.segments[current].max_pixel = i;
             if (x > results.segments[current].max_x){

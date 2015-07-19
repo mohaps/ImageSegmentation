@@ -428,9 +428,7 @@ $scope.renderUnknown = function(){
         if (results.segments[results.indexMap[i]].unknown)
         {
             data[4 * i + 0] = results.rgbData[4 * i + 0];
-            data[4 * i + 1] = res
-
-            ults.rgbData[4 * i + 1];
+            data[4 * i + 1] = results.rgbData[4 * i + 1];
             data[4 * i + 2] = results.rgbData[4 * i + 2];
             data[4 * i + 3] = 255;
         }

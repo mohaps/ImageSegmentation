@@ -310,6 +310,18 @@ $scope.updateCanvas = function () {
     });
 };
 
+$scope.labelUnknown = function(){
+    for(var s in state.results.unknown) {
+        seg = state.results.unknown[s];
+    }
+};
+
+$scope.labelMixed = function(){
+    for(var s in state.results.mixed) {
+        seg = state.results.mixed[s];
+    }
+};
+
 $scope.updateClusters = function(){
     var mask = state.mask_data.data,
         segments = state.results.segments,
@@ -389,37 +401,81 @@ $scope.renderUnknown = function(){
 
 var callbackSegmentation  = function(results){
         results.segments = {};
+
         var w = width,
-            h= height;
-        for (var i = 0; i < results.indexMap.length; ++i) {
-            var value = results.indexMap[i];
-            if (!results.segments.hasOwnProperty(value))
+            h = height;
+            l = results.indexMap.length;
+        for (var i = 0; i < l; ++i) {
+            var current = results.indexMap[i];
+            if (!results.segments.hasOwnProperty(current))
             {
-                results.segments[value] = {
+                results.segments[current] = {
                     'min_pixel':i,
                     'max_pixel':i,
                     'min_x':w+1,
                     'min_y':h+1,
                     'max_x':-1,
                     'max_y':-1,
-                    'mask':{'b':0,'f':0}
+                    'mask':{'b':0,'f':0},
+                    'neighbors':new Uint32Array(results.size)
                     }
             }
-                results.segments[value].max_pixel = i;
-                var y = Math.floor(i/w),
-                    x = (i % w);
-                if (x > results.segments[value].max_x){
-                    results.segments[value].max_x = x
-                }
-                if (x < results.segments[value].min_x){
-                    results.segments[value].min_x = x
-                }
-                if (y > results.segments[value].max_y){
-                    results.segments[value].max_y = y
-                }
-                if (y < results.segments[value].min_y){
-                    results.segments[value].min_y = y
-                }
+            var y = Math.floor(i/w), x = (i % w);
+            if (i != x + y*w)
+            {
+                console.log(["Error?",i,x + y*w])
+            }
+            if (i+1 < l )
+            {
+                results.segments[current].neighbors[results.indexMap[i+1]] += 1
+            }
+            if (i-1 > 0)
+            {
+                results.segments[current].neighbors[results.indexMap[i-1]] += 1
+            }
+            n = x + (y+1)*w;
+            if (n >= 0 && n < l)
+            {
+                results.segments[current].neighbors[results.indexMap[n]] += 1
+            }
+            n = x + 1 + (y+1)*w;
+            if (n >= 0 && n < l)
+            {
+                results.segments[current].neighbors[results.indexMap[n]] += 1
+            }
+            n = x - 1 + (y+1)*w;
+            if (n >= 0 && n < l)
+            {
+                results.segments[current].neighbors[results.indexMap[n]] += 1
+            }
+            n = x + (y-1)*w;
+            if (n >= 0 && n < l)
+            {
+                results.segments[current].neighbors[results.indexMap[n]] += 1
+            }
+            n = x + 1 + (y-1)*w;
+            if (n >= 0 && n < l)
+            {
+                results.segments[current].neighbors[results.indexMap[n]] += 1
+            }
+            n = x - 1 + (y-1)*w;
+            if (n >= 0 && n < l)
+            {
+                results.segments[current].neighbors[results.indexMap[n]] += 1
+            }
+            results.segments[current].max_pixel = i;
+            if (x > results.segments[current].max_x){
+                results.segments[current].max_x = x
+            }
+            if (x < results.segments[current].min_x){
+                results.segments[current].min_x = x
+            }
+            if (y > results.segments[current].max_y){
+                results.segments[current].max_y = y
+            }
+            if (y < results.segments[current].min_y){
+                results.segments[current].min_y = y
+            }
         }
         state.results = results;
 };

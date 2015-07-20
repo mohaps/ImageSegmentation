@@ -318,15 +318,37 @@ $scope.updateCanvas = function () {
 };
 
 $scope.labelUnknown = function(){
-    for(var s in state.results.unknown) {
-        seg = state.results.unknown[s];
+    var segments = state.results.segments;
+    if(!state.results.background.length||!state.results.background.length ) {
+        console.log("Please mark both Background and Foreground");
+        _.each(state.results.unknown,function(k){segments[k].foreground = true});
+        return
+    }
+    for(var index = 0; index < state.results.unknown.length; index++) {
+
+        seg = segments[state.results.unknown[index]];
+        seg.foreground = true;
+        var fgList = _.map(state.results.foreground,function(e){
+            return seg.edges[e] * (Math.abs(segments[e].mp[0] - seg.mp[0])
+                + Math.abs(segments[e].mp[1] - seg.mp[1])
+                + Math.abs(segments[e].mp[2] - seg.mp[2]))});
+        var fgDist =  _.reduce(fgList, function(memo, num){ return memo + num; }, 0) / fgList.length;
+
+        var bgList = _.map(state.results.background,function(e){
+            return seg.edges[e] * (Math.abs(segments[e].mp[0] - seg.mp[0])
+                + Math.abs(segments[e].mp[1] - seg.mp[1])
+                + Math.abs(segments[e].mp[2] - seg.mp[2]))});
+        var bgDist =  _.reduce(bgList, function(memo, num){ return memo + num; }, 0) / bgList.length;
+
+        if (fgDist > bgDist){
+            seg.foreground = false;
+            seg.background = true
+        }
+        //console.log([state.results.unknown[index],seg.foreground,bgDist,fgDist,bgList.length,fgList.length].join())
     }
 };
 
 $scope.labelMixed = function(){
-    for(var s in state.results.mixed) {
-        seg = state.results.mixed[s];
-    }
 };
 
 $scope.updateClusters = function(){
@@ -339,8 +361,11 @@ $scope.updateClusters = function(){
     state.results.background = [];
     for(var s in segments) {
         seg = segments[s];
-        seg.mask.f = 0;
-        seg.mask.b = 0;
+        seg.mask = { 'f':0,'b':0};
+        seg.foreground = false;
+        seg.background = false;
+        seg.unknown = false;
+        seg.mixed = false;
     }
 
     for (var i = 0; i < indexMap.length; ++i) {
@@ -358,30 +383,31 @@ $scope.updateClusters = function(){
         seg = segments[s];
         if (seg.mask.f > 0 && seg.mask.b == 0){
             seg.foreground = true;
+            seg.background = false;
             seg.unknown = false;
             seg.mixed = false;
-            state.results.foreground.push(seg)
+            state.results.foreground.push(s)
         }
         else if (seg.mask.b > 0 && seg.mask.f == 0){
             seg.foreground = false;
+            seg.background = true;
             seg.unknown = false;
             seg.mixed = false;
-            state.results.background.push(seg)
+            state.results.background.push(s)
         }
         else if (seg.mask.b > 0 && seg.mask.f > 0){
             seg.foreground = false;
+            seg.background = false;
             seg.unknown = false;
             seg.mixed = true;
-            state.results.mixed.push(seg)
+            state.results.mixed.push(s)
         }
         else{
-            seg.foreground = false;
             seg.unknown = true;
-            seg.mixed = false;
-            state.results.unknown.push(seg)
-
+            state.results.unknown.push(s)
         }
     }
+    $scope.labelUnknown();
 };
 
 $scope.renderSuperpixels = function(){
@@ -457,7 +483,8 @@ var callbackSegmentation  = function(results){
                     'max_x':-1,
                     'max_y':-1,
                     'mask':{'b':0,'f':0},
-                    'neighbors':new Uint32Array(results.size)
+                    'count':0,
+                    'mp':[0,0,0],
                     }
             }
             var y = Math.floor(i/w), x = (i % w);
@@ -465,46 +492,11 @@ var callbackSegmentation  = function(results){
             {
                 console.log(["Error?",i,x + y*w])
             }
-            if (x > 0 && y > 0 && x < w-1 && y < h-1){ // Ignoring all pixels on the image border
-                if (i+1 < l )
-                {
-                    results.segments[current].neighbors[results.indexMap[i+1]] += 1
-                }
-                if (i-1 > 0)
-                {
-                    results.segments[current].neighbors[results.indexMap[i-1]] += 1
-                }
-                n = x + (y+1)*w;
-                if (n >= 0 && n < l)
-                {
-                    results.segments[current].neighbors[results.indexMap[n]] += 1
-                }
-                n = x + 1 + (y+1)*w;
-                if (n >= 0 && n < l)
-                {
-                    results.segments[current].neighbors[results.indexMap[n]] += 1
-                }
-                n = x - 1 + (y+1)*w;
-                if (n >= 0 && n < l)
-                {
-                    results.segments[current].neighbors[results.indexMap[n]] += 1
-                }
-                n = x + (y-1)*w;
-                if (n >= 0 && n < l)
-                {
-                    results.segments[current].neighbors[results.indexMap[n]] += 1
-                }
-                n = x + 1 + (y-1)*w;
-                if (n >= 0 && n < l)
-                {
-                    results.segments[current].neighbors[results.indexMap[n]] += 1
-                }
-                n = x - 1 + (y-1)*w;
-                if (n >= 0 && n < l)
-                {
-                    results.segments[current].neighbors[results.indexMap[n]] += 1
-                }
-            }
+
+            results.segments[current].count += 1;
+            results.segments[current].mp[0] += results.rgbData[4 * i];
+            results.segments[current].mp[1] += results.rgbData[4 * i + 1];
+            results.segments[current].mp[2] += results.rgbData[4 * i + 2];
             results.segments[current].max_pixel = i;
             if (x > results.segments[current].max_x){
                 results.segments[current].max_x = x
@@ -520,10 +512,18 @@ var callbackSegmentation  = function(results){
             }
         }
         for(var s in results.segments){
+            results.segments[s].mp[0] =  results.segments[s].mp[0] /results.segments[s].count;
+            results.segments[s].mp[1] =  results.segments[s].mp[1] /results.segments[s].count;
+            results.segments[s].mp[2] =  results.segments[s].mp[2] /results.segments[s].count;
             results.segments[s].edges = {};
-            for(var k in results.segments[s].neighbors){
-                if(results.segments[s].neighbors[k] > 0 && k != s)
-                    results.segments[s].edges[k] = results.segments[s].neighbors[k]
+            for(var k in results.segments){
+                if (s != k){
+                    results.segments[s].edges[k] = 1.0;
+                    //    0.5 * (Math.abs(results.segments[s].min_x - results.segments[k].min_x) +
+                    //Math.abs(results.segments[s].min_y - results.segments[k].min_y) +
+                    //Math.abs(results.segments[s].max_x - results.segments[k].max_x) +
+                    //Math.abs(results.segments[s].max_y - results.segments[k].max_y))
+                }
             }
         }
         state.results = results;
@@ -552,9 +552,6 @@ $scope.renderResults = function(){
         else{
             data[4 * i + 3] = 0;
         }
-        //data[4 * i + 0] = (results.indexMap[i]*5)%255;
-        //data[4 * i + 1] = (results.indexMap[i]*25)%255;
-        //data[4 * i + 2] = (results.indexMap[i]*85)%255;
     }
     context.putImageData(imageData, 0, 0);
 };

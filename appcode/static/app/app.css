@@ -38,6 +38,7 @@ canvas
     display: inline;
 }
 #yaxis {
+    display: none;
     border-left: 1px solid black;
     border-top: 1px solid black;
     position: absolute;
@@ -161,9 +162,9 @@ input[type=color] {
 }
 #status{
   width: 700px;
-  text-align: left;
+  text-align: center;
   display: inline-block;
-  margin: 3px 150px 3px 5px !important;
+  margin: 3px 10% 3px 5px !important;
   padding: 10px 30px 10px 10px !important;
 }
 #rasterize{

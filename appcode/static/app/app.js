@@ -61,7 +61,7 @@ initialize_ui = function () {
         img.src = fr.result;
     };
     fr.readAsDataURL(file);
-    yax.hide()
+    yax.hide();
 });
 
 
@@ -91,6 +91,7 @@ initialize_ui = function () {
 var tour = {
   id: "hello-hopscotch",
   showPrevButton:true,
+  zindex:-1,
   steps: [
     {
       title: "Click here to add image",
@@ -148,6 +149,7 @@ var tour = {
 
 $(document).ready(function(){
     initialize_ui();
+    $('#introModal').modal();
     hopscotch.startTour(tour);
 });
 

@@ -196,3 +196,16 @@ input[type=color] {
 .drawing-mode {
     display: inline-block;
 }
+
+.modal-body{
+    text-align: center;
+
+}
+
+#introIMG{
+    width: 90%;
+}
+
+div.hopscotch-bubble {
+    z-index: 0 !important;
+}

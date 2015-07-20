@@ -332,14 +332,12 @@ $scope.labelUnknown = function(){
             return seg.edges[e] * (Math.abs(segments[e].mp[0] - seg.mp[0])
                 + Math.abs(segments[e].mp[1] - seg.mp[1])
                 + Math.abs(segments[e].mp[2] - seg.mp[2]))});
-        var fgDist =  _.reduce(fgList, function(memo, num){ return memo + num; }, 0) / fgList.length;
-
         var bgList = _.map(state.results.background,function(e){
             return seg.edges[e] * (Math.abs(segments[e].mp[0] - seg.mp[0])
                 + Math.abs(segments[e].mp[1] - seg.mp[1])
                 + Math.abs(segments[e].mp[2] - seg.mp[2]))});
-        var bgDist =  _.reduce(bgList, function(memo, num){ return memo + num; }, 0) / bgList.length;
-
+        var fgDist = Math.min.apply(null, fgList); // _.reduce(fgList, function(memo, num){ return memo + num; }, 0) / fgList.length;
+        var bgDist = Math.min.apply(null, bgList); //_.reduce(bgList, function(memo, num){ return memo + num; }, 0) / bgList.length;
         if (fgDist > bgDist){
             seg.foreground = false;
             seg.background = true

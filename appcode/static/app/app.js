@@ -32,7 +32,7 @@ initialize_ui = function () {
     //this.minSize = 1000;
     //};
     slic_opt = function () {
-    this.regionSize = 40;
+    this.regionSize = 30;
     this.minSize = 20;
     };
     //state.options.pf = new pf_opt();

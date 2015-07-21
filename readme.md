@@ -1,18 +1,17 @@
-Segmentation Engine by Akshay Bhat
+Image Eraser by Akshay Bhat
 =============================
 
 Demo [http://segmentation.akshaybhat.com/](http://segmentation.akshaybhat.com/)
 
-Segmentation Engine allows users to perform image segmentation inside browser using a vector editor (FabricJS) and JS implementations of Computer Vision algorithms.
+Image Eraser allows users to perform image segmentation inside browser using a vector editor (FabricJS) and JS implementations of Computer Vision algorithms.
 
 
-![Editing](tutorial/1.gif "Add images")
+![Editing](appcode/static/img/intro1.png "Mark image")
 
 
-![Segmentation](tutorial/2.gif "Draw regions and segment")
+![Segmentation](appcode/static/img/intro2.png "Segment")
 
 
-![Refinement](tutorial/3.gif "Update regions and segment again")
 
 
 

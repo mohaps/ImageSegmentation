@@ -202,8 +202,15 @@ input[type=color] {
 
 }
 
-#introIMG{
-    width: 90%;
+#introIMG1{
+    width: 45%;
+    display: inline-block;
+}
+
+#introIMG2{
+    width: 45%;
+    display:inline-block;
+    margin-left: 8%;
 }
 
 div.hopscotch-bubble {

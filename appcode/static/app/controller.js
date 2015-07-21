@@ -735,8 +735,6 @@ function watchCanvas($scope) {
 
 cveditor.controller('CanvasControls', function($scope) {
   $scope.yax = $('#yaxis');
-  delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left;
-  delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top;
   $scope.canvas = canvas;
   $scope.output_canvas = output_canvas;
   $scope.getActiveStyle = getActiveStyle;

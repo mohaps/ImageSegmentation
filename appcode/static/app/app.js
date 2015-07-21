@@ -48,22 +48,27 @@ initialize_ui = function () {
     canvas.backgroundColor = '#ffffff';
     $('#bg-color').val('#ffffff');
     canvas.renderAll();
-    $('#imgfile').on("change",function(){
-    file = this.files[0];
-    fr = new FileReader();
-    fr.onload = function () {
-        img = new Image();
-        img.onload = function () {
-            fabric.Image.fromURL(img.src, function (oImg) {
-            canvas.add(oImg);
-            });
-        };
-        img.src = fr.result;
-    };
-    fr.readAsDataURL(file);
     yax.hide();
-});
-
+    $('#imgfile').on("change",function(){
+        file = this.files[0];
+        fr = new FileReader();
+        fr.onload = function () {
+            img = new Image();
+            img.onload = function () {
+                fabric.Image.fromURL(img.src, function (oImg) {
+                canvas.add(oImg);
+                });
+            };
+            img.src = fr.result;
+        };
+        fr.readAsDataURL(file);
+    });
+  delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left;
+  delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top;
+    $(window).scroll(function () {
+      delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left + $(window).scrollLeft();
+      delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top + $(window).scrollTop();
+    });
 
 };
 

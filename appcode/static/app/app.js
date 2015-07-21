@@ -5,6 +5,7 @@ var canvas = new fabric.Canvas('canvas'),
     output_canvas = document.getElementById('output_canvas'),
     width = canvas.getWidth(),
     height = canvas.getHeight(),
+    jqwindow = $(window),
     delta_left = 0,
     delta_top = 0,
     yax = $('#yaxis'),
@@ -63,11 +64,11 @@ initialize_ui = function () {
         };
         fr.readAsDataURL(file);
     });
-  delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left;
-  delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top;
-    $(window).scroll(function () {
-      delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left + $(window).scrollLeft();
-      delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top + $(window).scrollTop();
+      delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left + jqwindow.scrollLeft();
+      delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top + jqwindow.scrollTop();
+    jqwindow.scroll(function () {
+      delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left + jqwindow.scrollLeft();
+      delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top + jqwindow.scrollTop();
     });
 
 };

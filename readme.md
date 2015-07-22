@@ -6,10 +6,9 @@ Demo [http://eraseimage.com/](http://eraseimage.com/)
 Image Eraser allows users to perform image segmentation inside browser using a vector editor (FabricJS) and JS implementations of Computer Vision algorithms.
 
 
-![Editing](appcode/static/img/intro1.png "Mark image")
+![Segmentation](tutorial/giphy.gif "Example")
 
 
-![Segmentation](appcode/static/img/intro2.png "Segment")
 
 
 

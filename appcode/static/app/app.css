@@ -206,11 +206,13 @@ input[type=color] {
 
 #introIMG1{
     width: 45%;
+    margin-top: 25px;
     display: inline-block;
 }
 
 #introIMG2{
     width: 45%;
+    margin-top: 25px;
     display:inline-block;
     margin-left: 8%;
 }

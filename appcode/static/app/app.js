@@ -70,6 +70,7 @@ initialize_ui = function () {
       delta_left = $('#output_canvas').offset().left - $('#canvas').offset().left + jqwindow.scrollLeft();
       delta_top = $('#output_canvas').offset().top - $('#canvas').offset().top + jqwindow.scrollTop();
     });
+    //fabric.Image.fromURL("/static/img/demo.jpg", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
 
 };
 
@@ -101,21 +102,18 @@ var tour = {
   steps: [
     {
       title: "Click here to add image",
-      content: "You can only upload one image at a time. But you can repeat the process to add more images and rearrange them. Click to <a id='example' href='#''>add an example image</a>.",
+      content: "You can only upload one image at a time. But you can repeat the process to add more images and rearrange them.",
       target: document.querySelector("#btnLoad"),
-      onShow:function(){
-        $('#example').on('click',function(event){
-        fabric.Image.fromURL("/static/img/test.png", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
-        state.recompute = true;
-        event.preventDefault();
-        });
-      },
       placement: "bottom"
     },
     {
       title: "Click inside to select, resize and move images",
       content: "Use this canvas to position and resize images.",
       target: document.querySelector("#canvas"),
+      onShow:function(){
+        fabric.Image.fromURL("/static/img/demo.jpg", function(oImg){canvas.add(oImg);},load_options = {crossOrigin:"Anonymous"});
+        state.recompute = true;
+      },
       placement: "right"
     },
     {
